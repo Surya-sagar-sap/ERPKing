@@ -74,11 +74,16 @@ export default async function DashboardPage() {
     <div className="min-h-screen bg-background">
       {/* Navbar */}
       <nav className="border-b px-6 py-3.5 flex items-center justify-between bg-card sticky top-0 z-10">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">S</span>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-sm">S</span>
+            </div>
+            <span className="font-bold text-lg">SAPKing</span>
           </div>
-          <span className="font-bold text-lg">SAPKing</span>
+          <Link href="/learn" className="text-sm text-muted-foreground hover:text-foreground transition-colors font-medium hidden sm:block">
+            Browse Modules
+          </Link>
         </div>
         <div className="flex items-center gap-4">
           {dbUser.streak > 0 && (

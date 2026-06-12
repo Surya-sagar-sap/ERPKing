@@ -62,6 +62,13 @@ export default async function ModulePage({ params }: { params: { moduleSlug: str
         <Link href="/learn" className="text-muted-foreground hover:text-foreground transition-colors">Modules</Link>
         <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />
         <span className="font-medium truncate max-w-[200px]">{mod.title}</span>
+        <div className="ml-auto shrink-0">
+          <form action="/api/auth/logout" method="POST">
+            <button className="text-xs text-muted-foreground hover:text-foreground transition-colors">
+              Sign out
+            </button>
+          </form>
+        </div>
       </nav>
 
       <div className="container mx-auto max-w-3xl py-10 px-4">

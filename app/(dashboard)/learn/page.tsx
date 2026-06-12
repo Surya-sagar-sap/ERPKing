@@ -50,9 +50,16 @@ export default async function LearnPage() {
           <ChevronRight className="w-4 h-4 text-muted-foreground" />
           <span className="text-sm font-medium">All Modules</span>
         </div>
-        <Link href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-          ← Dashboard
-        </Link>
+        <div className="flex items-center gap-4">
+          <Link href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            Dashboard
+          </Link>
+          <form action="/api/auth/logout" method="POST">
+            <button className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              Sign out
+            </button>
+          </form>
+        </div>
       </nav>
 
       <div className="container mx-auto max-w-5xl py-10 px-4">
