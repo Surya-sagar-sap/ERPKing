@@ -67,11 +67,11 @@ export default async function LessonPage({
     <div className="min-h-screen bg-background">
       {/* Navbar */}
       <nav className="border-b px-6 py-3 flex items-center gap-2 bg-card sticky top-0 z-10 text-sm">
-        <Link href="/dashboard" className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors">
-          <div className="w-6 h-6 bg-primary rounded flex items-center justify-center">
+        <Link href="/" className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors shrink-0">
+          <div className="w-6 h-6 bg-primary rounded-lg flex items-center justify-center">
             <span className="text-white font-bold text-[10px]">S</span>
           </div>
-          SAPKing
+          <span className="font-bold text-sm text-foreground">SAPKing</span>
         </Link>
         <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />
         <Link href="/learn" className="text-muted-foreground hover:text-foreground transition-colors">Modules</Link>

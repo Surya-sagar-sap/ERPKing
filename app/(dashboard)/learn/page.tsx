@@ -39,23 +39,29 @@ export default async function LearnPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Navbar */}
-      <nav className="border-b px-6 py-3.5 flex items-center justify-between bg-card sticky top-0 z-10">
-        <div className="flex items-center gap-3">
-          <Link href="/dashboard" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm">
-            <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xs">S</span>
-            </div>
-            <span className="font-semibold text-foreground">SAPKing</span>
-          </Link>
-          <ChevronRight className="w-4 h-4 text-muted-foreground" />
-          <span className="text-sm font-medium">All Modules</span>
-        </div>
-        <div className="flex items-center gap-4">
-          <Link href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+      <nav className="border-b px-6 h-14 flex items-center bg-card sticky top-0 z-10">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2 shrink-0">
+          <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center">
+            <span className="text-white font-bold text-xs">S</span>
+          </div>
+          <span className="font-bold text-base">SAPKing</span>
+        </Link>
+
+        {/* Nav links */}
+        <div className="hidden sm:flex items-center gap-1 ml-6">
+          <Link href="/dashboard" className="px-3 py-1.5 text-sm text-muted-foreground rounded-lg hover:bg-muted hover:text-foreground transition-colors">
             Dashboard
           </Link>
+          <Link href="/learn" className="px-3 py-1.5 text-sm font-medium rounded-lg hover:bg-muted transition-colors">
+            Learn
+          </Link>
+        </div>
+
+        {/* Right */}
+        <div className="ml-auto flex items-center gap-3">
           <form action="/api/auth/logout" method="POST">
-            <button className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <button className="text-sm text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded hover:bg-muted">
               Sign out
             </button>
           </form>

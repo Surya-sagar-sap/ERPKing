@@ -74,18 +74,32 @@ export default async function DashboardPage() {
     <div className="min-h-screen bg-background">
       {/* Navbar */}
       <nav className="border-b px-6 py-3.5 flex items-center justify-between bg-card sticky top-0 z-10">
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">S</span>
-            </div>
-            <span className="font-bold text-lg">SAPKing</span>
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2 shrink-0">
+          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+            <span className="text-white font-bold text-sm">S</span>
           </div>
-          <Link href="/learn" className="text-sm text-muted-foreground hover:text-foreground transition-colors font-medium hidden sm:block">
-            Browse Modules
+          <span className="font-bold text-base">SAPKing</span>
+        </Link>
+
+        {/* Nav links */}
+        <div className="hidden sm:flex items-center gap-1 ml-6">
+          <Link
+            href="/dashboard"
+            className="px-3 py-1.5 text-sm font-medium rounded-lg hover:bg-muted transition-colors"
+          >
+            Dashboard
+          </Link>
+          <Link
+            href="/learn"
+            className="px-3 py-1.5 text-sm text-muted-foreground rounded-lg hover:bg-muted hover:text-foreground transition-colors"
+          >
+            Learn
           </Link>
         </div>
-        <div className="flex items-center gap-4">
+
+        {/* Right: stats + sign out */}
+        <div className="ml-auto flex items-center gap-3">
           {dbUser.streak > 0 && (
             <div className="flex items-center gap-1 text-sm font-medium text-orange-500">
               <Flame className="w-4 h-4" />
@@ -103,7 +117,7 @@ export default async function DashboardPage() {
             </Link>
           )}
           <form action="/api/auth/logout" method="POST">
-            <button className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <button className="text-sm text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded hover:bg-muted">
               Sign out
             </button>
           </form>

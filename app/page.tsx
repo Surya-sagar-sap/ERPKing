@@ -36,22 +36,51 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* NAVBAR */}
-      <nav className="border-b sticky top-0 bg-background/80 backdrop-blur-sm z-50">
-        <div className="container mx-auto flex items-center justify-between h-16">
-          <div className="flex items-center gap-2">
+
+      {/* ── NAVBAR ── */}
+      <nav className="border-b sticky top-0 bg-background/90 backdrop-blur-md z-50">
+        <div className="container mx-auto px-6 flex items-center h-16">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2 shrink-0">
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">S</span>
             </div>
             <span className="font-bold text-xl">SAPKing</span>
+          </Link>
+
+          {/* Center nav links */}
+          <div className="hidden md:flex items-center gap-1 ml-8">
+            <a
+              href="#features"
+              className="px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors"
+            >
+              Features
+            </a>
+            <a
+              href="#modules"
+              className="px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors"
+            >
+              Modules
+            </a>
+            <a
+              href="#method"
+              className="px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors"
+            >
+              How it works
+            </a>
           </div>
-          <div className="flex items-center gap-4">
-            <Link href="/login" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+
+          {/* Right auth buttons */}
+          <div className="ml-auto flex items-center gap-2">
+            <Link
+              href="/login"
+              className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted"
+            >
               Sign in
             </Link>
             <Link
               href="/register"
-              className="bg-primary text-primary-foreground px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+              className="flex items-center gap-1.5 bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
             >
               Get started free
             </Link>
@@ -59,10 +88,10 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      {/* HERO */}
-      <section className="container mx-auto py-24 text-center">
+      {/* ── HERO ── */}
+      <section className="container mx-auto px-6 py-24 text-center">
         <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-          <span>🎯</span> 16 SAP modules · 120+ lessons · Interactive flowcharts
+          <span>🎯</span> 16 SAP modules · 55+ lessons · Interactive flowcharts
         </div>
         <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-6 max-w-3xl mx-auto leading-tight">
           Learn SAP the way it{" "}
@@ -86,10 +115,22 @@ export default function LandingPage() {
             Browse modules
           </Link>
         </div>
+        <div className="flex items-center justify-center gap-6 mt-8 text-sm text-muted-foreground">
+          {["Free to get started", "No prior SAP knowledge needed", "Learn at your own pace"].map((t) => (
+            <div key={t} className="flex items-center gap-1.5">
+              <CheckCircle className="w-4 h-4 text-green-500 shrink-0" />
+              {t}
+            </div>
+          ))}
+        </div>
       </section>
 
-      {/* FEATURES */}
-      <section className="container mx-auto py-16">
+      {/* ── FEATURES ── */}
+      <section id="features" className="container mx-auto px-6 py-16">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-3">Everything you need to learn SAP</h2>
+          <p className="text-muted-foreground">Built for beginners. Trusted by professionals.</p>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((f) => (
             <div key={f.title} className="border rounded-xl p-6 hover:shadow-md transition-shadow">
@@ -103,12 +144,14 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* MODULES */}
-      <section className="container mx-auto py-16">
-        <h2 className="text-3xl font-bold text-center mb-4">All SAP Modules Covered</h2>
-        <p className="text-muted-foreground text-center mb-12">
-          From beginner to advanced — every major SAP module in one place.
-        </p>
+      {/* ── MODULES ── */}
+      <section id="modules" className="container mx-auto px-6 py-16">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-3">All SAP Modules Covered</h2>
+          <p className="text-muted-foreground">
+            From beginner to advanced — every major SAP module in one place.
+          </p>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {modules.map((m) => (
             <div
@@ -136,39 +179,36 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* LEARNING METHOD */}
-      <section className="container mx-auto py-16">
+      {/* ── HOW IT WORKS ── */}
+      <section id="method" className="container mx-auto px-6 py-16">
         <div className="bg-muted/50 rounded-2xl p-8 md:p-12">
-          <h2 className="text-3xl font-bold mb-4 text-center">The SAPKing Method</h2>
+          <h2 className="text-3xl font-bold mb-3 text-center">The SAPKing Method</h2>
           <p className="text-muted-foreground text-center mb-10">Every lesson follows the same 5-step formula.</p>
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
             {[
               { step: "1", title: "The Story", desc: "A real business scenario you can relate to" },
-              { step: "2", title: "The Problem", desc: "What goes wrong without a system" },
+              { step: "2", title: "The Concept", desc: "What SAP does and why it matters" },
               { step: "3", title: "The Flowchart", desc: "Visual process diagram — click each step" },
-              { step: "4", title: "SAP Link", desc: "How SAP solves it — module, T-code, data" },
-              { step: "5", title: "Practice", desc: "Simulator + quiz to lock it in" },
-            ].map((s, i) => (
+              { step: "4", title: "Key Concept", desc: "One clear takeaway you won't forget" },
+              { step: "5", title: "The Quiz", desc: "3 questions to lock it in" },
+            ].map((s) => (
               <div key={s.step} className="text-center">
                 <div className="w-10 h-10 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold mx-auto mb-3">
                   {s.step}
                 </div>
-                <div className="font-semibold mb-1">{s.title}</div>
+                <div className="font-semibold mb-1 text-sm">{s.title}</div>
                 <div className="text-xs text-muted-foreground">{s.desc}</div>
-                {i < 4 && (
-                  <div className="hidden md:block absolute translate-x-full top-5 text-muted-foreground">→</div>
-                )}
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="container mx-auto py-24 text-center">
+      {/* ── CTA ── */}
+      <section className="container mx-auto px-6 py-24 text-center">
         <h2 className="text-4xl font-bold mb-4">Ready to master SAP?</h2>
-        <p className="text-muted-foreground mb-8 text-lg">
-          Join thousands of learners who went from zero to SAP-ready.
+        <p className="text-muted-foreground mb-8 text-lg max-w-xl mx-auto">
+          Start free today. No credit card, no experience needed. Just you and SAP — finally made simple.
         </p>
         <Link
           href="/register"
@@ -176,26 +216,18 @@ export default function LandingPage() {
         >
           Start for free <ArrowRight className="w-5 h-5" />
         </Link>
-        <div className="flex items-center justify-center gap-6 mt-6 text-sm text-muted-foreground">
-          {["No credit card required", "Free tier forever", "Cancel anytime"].map((t) => (
-            <div key={t} className="flex items-center gap-1.5">
-              <CheckCircle className="w-4 h-4 text-green-500" />
-              {t}
-            </div>
-          ))}
-        </div>
       </section>
 
-      {/* FOOTER */}
+      {/* ── FOOTER ── */}
       <footer className="border-t py-8">
-        <div className="container mx-auto flex items-center justify-between text-sm text-muted-foreground">
+        <div className="container mx-auto px-6 flex items-center justify-between text-sm text-muted-foreground">
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 bg-primary rounded flex items-center justify-center">
               <span className="text-white font-bold text-xs">S</span>
             </div>
-            <span>SAPKing</span>
+            <span className="font-medium">SAPKing</span>
           </div>
-          <div>© {new Date().getFullYear()} SAPKing. All rights reserved.</div>
+          <div>© {new Date().getFullYear()} SAPKing. Built for SAP learners.</div>
         </div>
       </footer>
     </div>

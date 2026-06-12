@@ -51,20 +51,30 @@ export default async function ModulePage({ params }: { params: { moduleSlug: str
   return (
     <div className="min-h-screen bg-background">
       {/* Navbar */}
-      <nav className="border-b px-6 py-3.5 flex items-center gap-2 bg-card sticky top-0 z-10 text-sm">
-        <Link href="/dashboard" className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors">
-          <div className="w-6 h-6 bg-primary rounded flex items-center justify-center">
-            <span className="text-white font-bold text-[10px]">S</span>
+      <nav className="border-b px-6 h-14 flex items-center bg-card sticky top-0 z-10 text-sm">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-1.5 shrink-0">
+          <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center">
+            <span className="text-white font-bold text-xs">S</span>
           </div>
-          SAPKing
+          <span className="font-bold text-base">SAPKing</span>
         </Link>
-        <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />
-        <Link href="/learn" className="text-muted-foreground hover:text-foreground transition-colors">Modules</Link>
-        <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />
-        <span className="font-medium truncate max-w-[200px]">{mod.title}</span>
-        <div className="ml-auto shrink-0">
+
+        {/* Breadcrumb */}
+        <div className="hidden sm:flex items-center gap-1.5 ml-4 text-muted-foreground">
+          <ChevronRight className="w-3.5 h-3.5" />
+          <Link href="/learn" className="hover:text-foreground transition-colors">Learn</Link>
+          <ChevronRight className="w-3.5 h-3.5" />
+          <span className="text-foreground font-medium truncate max-w-[200px]">{mod.title}</span>
+        </div>
+
+        {/* Right */}
+        <div className="ml-auto flex items-center gap-3 shrink-0">
+          <Link href="/dashboard" className="text-xs text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded hover:bg-muted hidden sm:block">
+            Dashboard
+          </Link>
           <form action="/api/auth/logout" method="POST">
-            <button className="text-xs text-muted-foreground hover:text-foreground transition-colors">
+            <button className="text-xs text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded hover:bg-muted">
               Sign out
             </button>
           </form>
