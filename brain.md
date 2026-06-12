@@ -228,7 +228,7 @@ Badge
 | 9. Gamification | ✅ Done | 2026-06-11 | Badges grid (earned vs locked with 🔒 overlay), XP level system with progress bar (XP % toward next 500 threshold), streak flame counter in navbar, perfect quiz badge notification, all integrated into single dashboard page |
 | 10. SAP Content | ✅ Done | 2026-06-11 | All 16 modules seeded: added SD, PP, HCM, PM, QM, WM, BASIS, ABAP, Fiori, S/4HANA, BTP, SuccessFactors, SAC. 31 lessons / 31 flowcharts / 31 quizzes (93 Qs) total. |
 | 11. Polish | ✅ Done | 2026-06-11 | 404 page, global error.tsx, loading skeletons for dashboard/learn/module/lesson pages, SEO metadata on learn page, viewport meta + themeColor in root layout |
-| 12. Deploy | ⬜ Not Started | — | — |
+| 12. Deploy | ✅ Done | 2026-06-11 | Pushed to GitHub (ERPKing repo), deployed to Vercel with all 6 env vars, production build successful |
 
 ---
 
@@ -247,9 +247,9 @@ Badge
 ---
 
 ## CURRENT SESSION
-**Working On:** Section 12 — Deploy
+**Working On:** Post-deploy smoke test + Cloudflare domain
 **Blocked By:** Nothing
-**Next Action:** Push to GitHub → connect Vercel → set env vars → connect Cloudflare domain → smoke test production
+**Next Action:** Test live URL → run smoke test (signup, lesson, quiz) → connect Cloudflare domain
 
 ---
 
