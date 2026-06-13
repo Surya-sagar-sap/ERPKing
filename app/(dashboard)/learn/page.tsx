@@ -1,9 +1,10 @@
+// ─── FILE: app/(dashboard)/learn/page.tsx ───
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { BookOpen, Clock, ChevronRight, Lock } from "lucide-react";
+import { BookOpen, Clock, ChevronRight, ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "All Modules",
@@ -39,10 +40,10 @@ export default async function LearnPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Navbar */}
-      <nav className="border-b px-6 h-14 flex items-center bg-card sticky top-0 z-10">
+      <nav className="border-b border-border/60 px-6 h-14 flex items-center bg-background/80 backdrop-blur-xl sticky top-0 z-10">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 shrink-0">
-          <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center">
+          <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)" }}>
             <span className="text-white font-bold text-xs">S</span>
           </div>
           <span className="font-bold text-base">SAPKing</span>
@@ -53,7 +54,7 @@ export default async function LearnPage() {
           <Link href="/dashboard" className="px-3 py-1.5 text-sm text-muted-foreground rounded-lg hover:bg-muted hover:text-foreground transition-colors">
             Dashboard
           </Link>
-          <Link href="/learn" className="px-3 py-1.5 text-sm font-medium rounded-lg hover:bg-muted transition-colors">
+          <Link href="/learn" className="px-3 py-1.5 text-sm font-medium rounded-lg bg-muted transition-colors">
             Learn
           </Link>
         </div>
@@ -69,9 +70,13 @@ export default async function LearnPage() {
       </nav>
 
       <div className="container mx-auto max-w-5xl py-10 px-4">
+        {/* Header */}
         <div className="mb-10">
-          <h1 className="text-3xl font-bold">SAP Learning Path</h1>
-          <p className="text-muted-foreground mt-2">
+          <div className="inline-flex items-center gap-2 text-primary text-sm font-medium mb-3">
+            <Sparkles className="w-4 h-4" /> Course catalog
+          </div>
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight">SAP Learning Path</h1>
+          <p className="text-muted-foreground mt-2 text-lg">
             {modules.length} modules · Learn at your own pace · Beginner friendly
           </p>
         </div>
@@ -88,61 +93,81 @@ export default async function LearnPage() {
               <Link
                 key={mod.id}
                 href={`/learn/${mod.slug}`}
-                className="flex items-center gap-5 border rounded-2xl p-5 bg-card hover:shadow-md transition-all group"
+                className="group relative flex items-center gap-5 border border-border rounded-2xl p-5 pl-6 bg-card overflow-hidden transition-transform hover:-translate-y-0.5"
               >
+                {/* Color accent edge */}
+                <div className="absolute left-0 top-0 bottom-0 w-1.5" style={{ backgroundColor: mod.color }} />
+                {/* Hover glow */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute -left-10 top-1/2 -translate-y-1/2 w-40 h-40 rounded-full opacity-0 group-hover:opacity-100 blur-3xl transition-opacity"
+                  style={{ background: `radial-gradient(circle, ${mod.color}, transparent 70%)` }}
+                />
+
                 {/* Icon + number */}
-                <div className="shrink-0 relative">
+                <div className="relative shrink-0">
                   <div
-                    className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl"
-                    style={{ backgroundColor: mod.color + "18", border: `2px solid ${mod.color}30` }}
+                    className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl"
+                    style={{ backgroundColor: mod.color + "1f", border: `2px solid ${mod.color}40` }}
                   >
                     {mod.icon}
                   </div>
                   <div
-                    className="absolute -top-1.5 -left-1.5 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white"
-                    style={{ backgroundColor: mod.color }}
+                    className="absolute -top-2 -left-2 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white"
+                    style={{ backgroundColor: mod.color, boxShadow: `0 4px 12px -2px ${mod.color}` }}
                   >
                     {idx + 1}
                   </div>
                 </div>
 
                 {/* Content */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-0.5">
-                    <h2 className="font-semibold text-base group-hover:text-primary transition-colors">{mod.title}</h2>
+                <div className="relative flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1 flex-wrap">
+                    <h2 className="font-semibold text-lg group-hover:text-primary transition-colors">{mod.title}</h2>
                     {isStarted && pct < 100 && (
-                      <span className="text-xs bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-400 px-2 py-0.5 rounded-full font-medium">In Progress</span>
+                      <span
+                        className="text-[11px] px-2 py-0.5 rounded-full font-semibold"
+                        style={{ backgroundColor: mod.color + "1f", color: mod.color }}
+                      >
+                        In Progress
+                      </span>
                     )}
                     {pct === 100 && (
-                      <span className="text-xs bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400 px-2 py-0.5 rounded-full font-medium">✓ Complete</span>
+                      <span className="text-[11px] inline-flex items-center gap-1 bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full font-semibold">
+                        <CheckCircle2 className="w-3 h-3" /> Complete
+                      </span>
                     )}
                   </div>
                   <p className="text-sm text-muted-foreground truncate">{mod.description}</p>
 
-                  {/* Progress bar */}
-                  <div className="mt-3 flex items-center gap-3">
-                    <div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden">
+                  {/* Progress bar with glow */}
+                  <div className="mt-3.5 flex items-center gap-3">
+                    <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
                       <div
                         className="h-full rounded-full transition-all"
-                        style={{ width: `${pct}%`, backgroundColor: mod.color }}
+                        style={{ width: `${pct}%`, backgroundColor: mod.color, boxShadow: pct > 0 ? `0 0 10px ${mod.color}99` : undefined }}
                       />
                     </div>
-                    <span className="text-xs text-muted-foreground shrink-0">
-                      {completedCount}/{totalLessons} lessons
-                    </span>
+                    <span className="text-xs font-medium text-muted-foreground shrink-0 w-12 text-right">{pct}%</span>
+                  </div>
+
+                  {/* Meta row */}
+                  <div className="mt-3 flex items-center gap-4 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1"><BookOpen className="w-3.5 h-3.5" /> {completedCount}/{totalLessons} lessons</span>
+                    <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {totalMinutes} min</span>
                   </div>
                 </div>
 
-                {/* Right meta */}
-                <div className="shrink-0 text-right hidden sm:block">
-                  <div className="flex items-center gap-1 text-xs text-muted-foreground justify-end">
-                    <Clock className="w-3 h-3" />
-                    <span>{totalMinutes} min</span>
+                {/* Right CTA */}
+                <div className="relative shrink-0 hidden sm:flex">
+                  <div
+                    className="flex items-center gap-1.5 text-sm font-semibold px-4 py-2.5 rounded-xl transition-all group-hover:gap-2.5"
+                    style={{ backgroundColor: mod.color + "1f", color: mod.color }}
+                  >
+                    {pct === 100 ? "Review" : isStarted ? "Continue" : "Start"} <ArrowRight className="w-4 h-4" />
                   </div>
-                  <div className="mt-1 text-xs text-muted-foreground">{totalLessons} lessons</div>
                 </div>
-
-                <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
+                <ChevronRight className="sm:hidden w-5 h-5 text-muted-foreground shrink-0" />
               </Link>
             );
           })}
@@ -158,3 +183,4 @@ export default async function LearnPage() {
     </div>
   );
 }
+// ─── END FILE ───

@@ -1,5 +1,9 @@
+// ─── FILE: app/page.tsx ───
 import Link from "next/link";
-import { ArrowRight, BookOpen, Zap, Trophy, BarChart3, CheckCircle } from "lucide-react";
+import {
+  ArrowRight, BookOpen, Zap, Trophy, BarChart3, CheckCircle,
+  Sparkles, Layers, GraduationCap, Flame, Star, PlayCircle,
+} from "lucide-react";
 
 export default function LandingPage() {
   const modules = [
@@ -16,71 +20,63 @@ export default function LandingPage() {
       icon: <BookOpen className="w-6 h-6" />,
       title: "Story-First Learning",
       desc: "Every lesson starts with a real business scenario before introducing any SAP concept.",
+      accent: "#2563EB",
     },
     {
       icon: <Zap className="w-6 h-6" />,
       title: "Interactive Flowcharts",
       desc: "Click through every SAP process step-by-step. See T-codes, tips, and explanations.",
+      accent: "#7C3AED",
     },
     {
       icon: <Trophy className="w-6 h-6" />,
       title: "Gamified Progress",
       desc: "Earn XP, badges, and level up as you complete lessons. Keep your streak alive.",
+      accent: "#EA580C",
     },
     {
       icon: <BarChart3 className="w-6 h-6" />,
       title: "Track Everything",
       desc: "Dashboard shows exactly where you are across all 16 SAP modules.",
+      accent: "#16A34A",
     },
   ];
 
+  const stats = [
+    { value: "16", label: "SAP Modules", icon: <Layers className="w-4 h-4" /> },
+    { value: "110+", label: "Lessons", icon: <BookOpen className="w-4 h-4" /> },
+    { value: "330+", label: "Quiz Questions", icon: <GraduationCap className="w-4 h-4" /> },
+    { value: "XP", label: "& Badges", icon: <Trophy className="w-4 h-4" /> },
+  ];
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background text-foreground">
 
       {/* ── NAVBAR ── */}
-      <nav className="border-b sticky top-0 bg-background/90 backdrop-blur-md z-50">
+      <nav className="border-b border-border/60 sticky top-0 bg-background/80 backdrop-blur-xl z-50">
         <div className="container mx-auto px-6 flex items-center h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 shrink-0">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+          <Link href="/" className="flex items-center gap-2.5 shrink-0">
+            <div
+              className="w-9 h-9 rounded-xl flex items-center justify-center shadow-lg"
+              style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)", boxShadow: "0 4px 20px -4px rgba(124,58,237,0.5)" }}
+            >
               <span className="text-white font-bold text-sm">S</span>
             </div>
-            <span className="font-bold text-xl">SAPKing</span>
+            <span className="font-bold text-xl tracking-tight">SAPKing</span>
           </Link>
 
-          {/* Center nav links */}
-          <div className="hidden md:flex items-center gap-1 ml-8">
-            <a
-              href="#features"
-              className="px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors"
-            >
-              Features
-            </a>
-            <a
-              href="#modules"
-              className="px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors"
-            >
-              Modules
-            </a>
-            <a
-              href="#method"
-              className="px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors"
-            >
-              How it works
-            </a>
+          <div className="hidden md:flex items-center gap-1 ml-10">
+            <a href="#features" className="px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors">Features</a>
+            <a href="#modules" className="px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors">Modules</a>
+            <a href="#method" className="px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors">How it works</a>
           </div>
 
-          {/* Right auth buttons */}
           <div className="ml-auto flex items-center gap-2">
-            <Link
-              href="/login"
-              className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted"
-            >
-              Sign in
-            </Link>
+            <Link href="/login" className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted">Sign in</Link>
             <Link
               href="/register"
-              className="flex items-center gap-1.5 bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+              className="flex items-center gap-1.5 text-white px-4 py-2 rounded-lg text-sm font-medium transition-transform hover:scale-[1.03]"
+              style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)", boxShadow: "0 4px 20px -6px rgba(124,58,237,0.6)" }}
             >
               Get started free
             </Link>
@@ -89,102 +85,218 @@ export default function LandingPage() {
       </nav>
 
       {/* ── HERO ── */}
-      <section className="container mx-auto px-6 py-24 text-center">
-        <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-          <span>🎯</span> 16 SAP modules · 55+ lessons · Interactive flowcharts
-        </div>
-        <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-6 max-w-3xl mx-auto leading-tight">
-          Learn SAP the way it{" "}
-          <span className="text-primary">actually makes sense</span>
-        </h1>
-        <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto">
-          No jargon. No walls of text. Every concept starts with a real business story,
-          shown as a visual flowchart, explained in plain English.
-        </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link
-            href="/register"
-            className="flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3.5 rounded-xl font-semibold text-lg hover:bg-primary/90 transition-colors"
-          >
-            Start learning free <ArrowRight className="w-5 h-5" />
-          </Link>
-          <Link
-            href="/learn"
-            className="flex items-center gap-2 border px-8 py-3.5 rounded-xl font-semibold text-lg hover:bg-muted transition-colors"
-          >
-            Browse modules
-          </Link>
-        </div>
-        <div className="flex items-center justify-center gap-6 mt-8 text-sm text-muted-foreground">
-          {["Free to get started", "No prior SAP knowledge needed", "Learn at your own pace"].map((t) => (
-            <div key={t} className="flex items-center gap-1.5">
-              <CheckCircle className="w-4 h-4 text-green-500 shrink-0" />
-              {t}
+      <section className="relative overflow-hidden">
+        {/* Decorative gradient orbs */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[900px] rounded-full opacity-30 blur-[120px]"
+          style={{ background: "radial-gradient(circle at center, hsl(var(--primary)), transparent 60%)" }}
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute top-20 -right-40 w-[500px] h-[500px] rounded-full opacity-20 blur-[110px]"
+          style={{ background: "radial-gradient(circle at center, #7C3AED, transparent 60%)" }}
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-[0.04]"
+          style={{ backgroundImage: "linear-gradient(hsl(var(--foreground)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)", backgroundSize: "48px 48px", maskImage: "radial-gradient(ellipse 70% 60% at 50% 0%, black, transparent)" }}
+        />
+
+        <div className="container mx-auto px-6 pt-20 pb-16 grid lg:grid-cols-2 gap-12 items-center relative">
+          {/* Left: copy */}
+          <div className="text-center lg:text-left">
+            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary border border-primary/20 px-4 py-1.5 rounded-full text-sm font-medium mb-6">
+              <Sparkles className="w-3.5 h-3.5" /> 16 SAP modules · 110+ interactive lessons
             </div>
-          ))}
+            <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-6 leading-[1.05]">
+              Learn SAP the way it{" "}
+              <span className="bg-gradient-to-r from-primary via-primary to-[#7C3AED] bg-clip-text text-transparent">
+                actually makes sense
+              </span>
+            </h1>
+            <p className="text-lg md:text-xl text-muted-foreground mb-9 max-w-xl mx-auto lg:mx-0">
+              No jargon. No walls of text. Every concept starts with a real business story,
+              shown as a visual flowchart, and locked in with a quick quiz.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-3">
+              <Link
+                href="/register"
+                className="flex items-center gap-2 text-white px-7 py-3.5 rounded-xl font-semibold text-lg transition-transform hover:scale-[1.03]"
+                style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)", boxShadow: "0 10px 40px -10px rgba(124,58,237,0.6)" }}
+              >
+                Start learning free <ArrowRight className="w-5 h-5" />
+              </Link>
+              <Link
+                href="/learn"
+                className="flex items-center gap-2 border border-border bg-card/60 backdrop-blur px-7 py-3.5 rounded-xl font-semibold text-lg hover:bg-muted transition-colors"
+              >
+                <PlayCircle className="w-5 h-5" /> Browse modules
+              </Link>
+            </div>
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 mt-8 text-sm text-muted-foreground">
+              {["Free to get started", "No prior SAP knowledge", "Learn at your own pace"].map((t) => (
+                <div key={t} className="flex items-center gap-1.5">
+                  <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0" />
+                  {t}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right: faux product window */}
+          <div className="relative">
+            <div
+              className="rounded-2xl border border-border bg-card/80 backdrop-blur-xl p-5 shadow-2xl"
+              style={{ boxShadow: "0 30px 80px -20px rgba(0,0,0,0.45)" }}
+            >
+              {/* window chrome */}
+              <div className="flex items-center gap-1.5 mb-4">
+                <span className="w-3 h-3 rounded-full bg-red-400/80" />
+                <span className="w-3 h-3 rounded-full bg-amber-400/80" />
+                <span className="w-3 h-3 rounded-full bg-emerald-400/80" />
+                <span className="ml-3 text-xs text-muted-foreground">SAPKing · Dashboard</span>
+              </div>
+
+              {/* XP strip */}
+              <div className="rounded-xl border border-border bg-background/60 p-4 mb-4">
+                <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
+                  <span className="flex items-center gap-1.5 font-medium text-foreground"><Star className="w-3.5 h-3.5 text-yellow-500" /> Level 4</span>
+                  <span className="flex items-center gap-1.5"><Flame className="w-3.5 h-3.5 text-orange-500" /> 7-day streak</span>
+                </div>
+                <div className="h-2.5 rounded-full bg-muted overflow-hidden">
+                  <div className="h-full rounded-full" style={{ width: "68%", background: "linear-gradient(90deg, hsl(var(--primary)), #7C3AED)" }} />
+                </div>
+              </div>
+
+              {/* module tiles */}
+              <div className="grid grid-cols-2 gap-3">
+                {modules.slice(0, 4).map((m, i) => (
+                  <div key={m.name} className="rounded-xl border border-border bg-background/60 p-3">
+                    <div className="flex items-center gap-2 mb-2.5">
+                      <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-[11px] font-bold" style={{ backgroundColor: m.color }}>
+                        {m.name.split(" ")[1]}
+                      </div>
+                      <span className="text-xs font-semibold truncate">{m.name}</span>
+                    </div>
+                    <div className="h-1.5 rounded-full bg-muted overflow-hidden">
+                      <div className="h-full rounded-full" style={{ width: `${[80, 45, 100, 30][i]}%`, backgroundColor: m.color }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* floating badge */}
+            <div className="absolute -bottom-5 -left-5 hidden sm:flex items-center gap-2 rounded-xl border border-border bg-card px-3.5 py-2.5 shadow-xl">
+              <Trophy className="w-5 h-5 text-yellow-500" />
+              <div className="leading-tight">
+                <div className="text-xs font-semibold">Badge unlocked</div>
+                <div className="text-[10px] text-muted-foreground">FICO Starter · +100 XP</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Social proof stats */}
+        <div className="container mx-auto px-6 pb-16 relative">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {stats.map((s) => (
+              <div key={s.label} className="rounded-2xl border border-border bg-card/60 backdrop-blur p-5 text-center">
+                <div className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-primary/10 text-primary mb-3">{s.icon}</div>
+                <div className="text-3xl font-bold tracking-tight">{s.value}</div>
+                <div className="text-sm text-muted-foreground">{s.label}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* ── FEATURES ── */}
-      <section id="features" className="container mx-auto px-6 py-16">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-3">Everything you need to learn SAP</h2>
-          <p className="text-muted-foreground">Built for beginners. Trusted by professionals.</p>
+      <section id="features" className="container mx-auto px-6 py-20">
+        <div className="text-center mb-14">
+          <div className="inline-flex items-center gap-2 text-primary text-sm font-medium mb-3"><Sparkles className="w-4 h-4" /> Why SAPKing</div>
+          <h2 className="text-3xl md:text-4xl font-bold mb-3 tracking-tight">Everything you need to learn SAP</h2>
+          <p className="text-muted-foreground text-lg">Built for beginners. Trusted by professionals.</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           {features.map((f) => (
-            <div key={f.title} className="border rounded-xl p-6 hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-primary/10 text-primary rounded-lg flex items-center justify-center mb-4">
+            <div
+              key={f.title}
+              className="group relative rounded-2xl border border-border bg-card p-6 overflow-hidden hover:-translate-y-1 transition-transform"
+            >
+              <div
+                aria-hidden
+                className="absolute -top-16 -right-16 w-40 h-40 rounded-full opacity-0 group-hover:opacity-100 blur-3xl transition-opacity"
+                style={{ background: `radial-gradient(circle, ${f.accent}, transparent 70%)` }}
+              />
+              <div
+                className="relative w-12 h-12 rounded-xl flex items-center justify-center mb-4 text-white"
+                style={{ backgroundColor: f.accent, boxShadow: `0 8px 24px -8px ${f.accent}` }}
+              >
                 {f.icon}
               </div>
-              <h3 className="font-semibold mb-2">{f.title}</h3>
-              <p className="text-sm text-muted-foreground">{f.desc}</p>
+              <h3 className="relative font-semibold text-lg mb-2">{f.title}</h3>
+              <p className="relative text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* ── MODULES ── */}
-      <section id="modules" className="container mx-auto px-6 py-16">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-3">All SAP Modules Covered</h2>
-          <p className="text-muted-foreground">
-            From beginner to advanced — every major SAP module in one place.
-          </p>
+      <section id="modules" className="container mx-auto px-6 py-20">
+        <div className="text-center mb-14">
+          <div className="inline-flex items-center gap-2 text-primary text-sm font-medium mb-3"><Layers className="w-4 h-4" /> Full curriculum</div>
+          <h2 className="text-3xl md:text-4xl font-bold mb-3 tracking-tight">All SAP Modules Covered</h2>
+          <p className="text-muted-foreground text-lg">From beginner to advanced — every major SAP module in one place.</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {modules.map((m) => (
             <div
               key={m.name}
-              className="border rounded-xl p-5 flex items-center gap-4 hover:shadow-md transition-shadow"
+              className="group relative rounded-2xl border border-border bg-card p-5 flex items-center gap-4 overflow-hidden hover:-translate-y-0.5 transition-transform"
             >
+              <div className="absolute left-0 top-0 bottom-0 w-1.5" style={{ backgroundColor: m.color }} />
               <div
-                className="w-12 h-12 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
-                style={{ backgroundColor: m.color }}
+                className="w-14 h-14 rounded-xl flex items-center justify-center text-white font-bold text-base flex-shrink-0"
+                style={{ backgroundColor: m.color, boxShadow: `0 8px 24px -10px ${m.color}` }}
               >
                 {m.name.split(" ")[1]}
               </div>
-              <div>
+              <div className="min-w-0">
                 <div className="font-semibold">{m.name}</div>
-                <div className="text-sm text-muted-foreground">{m.desc}</div>
-                <div className="text-xs text-muted-foreground mt-1">{m.lessons} lessons</div>
+                <div className="text-sm text-muted-foreground truncate">{m.desc}</div>
+                <div className="text-xs text-muted-foreground mt-1.5 flex items-center gap-1">
+                  <BookOpen className="w-3 h-3" /> {m.lessons} lessons
+                </div>
               </div>
+              <ArrowRight className="w-4 h-4 text-muted-foreground ml-auto opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all shrink-0" />
             </div>
           ))}
         </div>
-        <div className="text-center mt-8">
-          <Link href="/learn" className="text-primary hover:underline text-sm font-medium">
-            View all 16 modules →
+        <div className="text-center mt-10">
+          <Link href="/learn" className="inline-flex items-center gap-1.5 text-primary hover:gap-2.5 transition-all text-sm font-semibold">
+            View all 16 modules <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
       </section>
 
       {/* ── HOW IT WORKS ── */}
-      <section id="method" className="container mx-auto px-6 py-16">
-        <div className="bg-muted/50 rounded-2xl p-8 md:p-12">
-          <h2 className="text-3xl font-bold mb-3 text-center">The SAPKing Method</h2>
-          <p className="text-muted-foreground text-center mb-10">Every lesson follows the same 5-step formula.</p>
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+      <section id="method" className="container mx-auto px-6 py-20">
+        <div
+          className="relative rounded-3xl border border-border p-8 md:p-14 overflow-hidden"
+          style={{ background: "linear-gradient(135deg, hsl(var(--card)), hsl(var(--muted)))" }}
+        >
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -top-24 -right-24 w-80 h-80 rounded-full opacity-20 blur-[100px]"
+            style={{ background: "radial-gradient(circle, hsl(var(--primary)), transparent 60%)" }}
+          />
+          <div className="relative text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-3 tracking-tight">The SAPKing Method</h2>
+            <p className="text-muted-foreground text-lg">Every lesson follows the same 5-step formula.</p>
+          </div>
+          <div className="relative grid grid-cols-1 md:grid-cols-5 gap-6">
             {[
               { step: "1", title: "The Story", desc: "A real business scenario you can relate to" },
               { step: "2", title: "The Concept", desc: "What SAP does and why it matters" },
@@ -193,11 +305,14 @@ export default function LandingPage() {
               { step: "5", title: "The Quiz", desc: "3 questions to lock it in" },
             ].map((s) => (
               <div key={s.step} className="text-center">
-                <div className="w-10 h-10 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold mx-auto mb-3">
+                <div
+                  className="w-12 h-12 text-white rounded-2xl flex items-center justify-center font-bold text-lg mx-auto mb-4"
+                  style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)", boxShadow: "0 8px 24px -8px rgba(124,58,237,0.6)" }}
+                >
                   {s.step}
                 </div>
-                <div className="font-semibold mb-1 text-sm">{s.title}</div>
-                <div className="text-xs text-muted-foreground">{s.desc}</div>
+                <div className="font-semibold mb-1">{s.title}</div>
+                <div className="text-sm text-muted-foreground">{s.desc}</div>
               </div>
             ))}
           </div>
@@ -205,27 +320,38 @@ export default function LandingPage() {
       </section>
 
       {/* ── CTA ── */}
-      <section className="container mx-auto px-6 py-24 text-center">
-        <h2 className="text-4xl font-bold mb-4">Ready to master SAP?</h2>
-        <p className="text-muted-foreground mb-8 text-lg max-w-xl mx-auto">
-          Start free today. No credit card, no experience needed. Just you and SAP — finally made simple.
-        </p>
-        <Link
-          href="/register"
-          className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-10 py-4 rounded-xl font-semibold text-lg hover:bg-primary/90 transition-colors"
+      <section className="container mx-auto px-6 py-24">
+        <div
+          className="relative rounded-3xl p-12 md:p-16 text-center overflow-hidden border border-primary/20"
+          style={{ background: "linear-gradient(135deg, hsl(var(--primary) / 0.12), #7C3AED20)" }}
         >
-          Start for free <ArrowRight className="w-5 h-5" />
-        </Link>
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-30 blur-[100px]"
+            style={{ background: "radial-gradient(circle at 50% 0%, hsl(var(--primary)), transparent 60%)" }}
+          />
+          <h2 className="relative text-3xl md:text-5xl font-bold mb-4 tracking-tight">Ready to master SAP?</h2>
+          <p className="relative text-muted-foreground mb-8 text-lg max-w-xl mx-auto">
+            Start free today. No credit card, no experience needed. Just you and SAP — finally made simple.
+          </p>
+          <Link
+            href="/register"
+            className="relative inline-flex items-center gap-2 text-white px-10 py-4 rounded-xl font-semibold text-lg transition-transform hover:scale-[1.03]"
+            style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)", boxShadow: "0 12px 40px -10px rgba(124,58,237,0.6)" }}
+          >
+            Start for free <ArrowRight className="w-5 h-5" />
+          </Link>
+        </div>
       </section>
 
       {/* ── FOOTER ── */}
-      <footer className="border-t py-8">
+      <footer className="border-t border-border/60 py-8">
         <div className="container mx-auto px-6 flex items-center justify-between text-sm text-muted-foreground">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-primary rounded flex items-center justify-center">
+            <div className="w-6 h-6 rounded flex items-center justify-center" style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)" }}>
               <span className="text-white font-bold text-xs">S</span>
             </div>
-            <span className="font-medium">SAPKing</span>
+            <span className="font-medium text-foreground">SAPKing</span>
           </div>
           <div>© {new Date().getFullYear()} SAPKing. Built for SAP learners.</div>
         </div>
@@ -233,3 +359,4 @@ export default function LandingPage() {
     </div>
   );
 }
+// ─── END FILE ───

@@ -1,10 +1,11 @@
+// ─── FILE: app/(dashboard)/dashboard/page.tsx ───
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import {
   BookOpen, Trophy, Flame, Star, ChevronRight,
-  Zap, Shield, Lock, CheckCircle2, Clock,
+  Zap, Shield, Lock, CheckCircle2, Clock, ArrowRight, Sparkles,
 } from "lucide-react";
 
 const XP_PER_LEVEL = 500;
@@ -70,13 +71,22 @@ export default async function DashboardPage() {
 
   const isAdmin = dbUser.role === "ADMIN";
 
+  // Presentation-only derived values
+  const overallPct = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
+  const statCards = [
+    { label: "Lessons Done", value: completedCount, icon: BookOpen, color: "#2563EB" },
+    { label: "XP Earned", value: dbUser.xp, icon: Star, color: "#D97706" },
+    { label: "Day Streak", value: dbUser.streak, icon: Flame, color: "#EA580C" },
+    { label: "Badges", value: userBadges.length, icon: Trophy, color: "#7C3AED" },
+  ];
+
   return (
     <div className="min-h-screen bg-background">
       {/* Navbar */}
-      <nav className="border-b px-6 py-3.5 flex items-center justify-between bg-card sticky top-0 z-10">
+      <nav className="border-b border-border/60 px-6 py-3.5 flex items-center justify-between bg-background/80 backdrop-blur-xl sticky top-0 z-10">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 shrink-0">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)" }}>
             <span className="text-white font-bold text-sm">S</span>
           </div>
           <span className="font-bold text-base">SAPKing</span>
@@ -84,16 +94,10 @@ export default async function DashboardPage() {
 
         {/* Nav links */}
         <div className="hidden sm:flex items-center gap-1 ml-6">
-          <Link
-            href="/dashboard"
-            className="px-3 py-1.5 text-sm font-medium rounded-lg hover:bg-muted transition-colors"
-          >
+          <Link href="/dashboard" className="px-3 py-1.5 text-sm font-medium rounded-lg bg-muted transition-colors">
             Dashboard
           </Link>
-          <Link
-            href="/learn"
-            className="px-3 py-1.5 text-sm text-muted-foreground rounded-lg hover:bg-muted hover:text-foreground transition-colors"
-          >
+          <Link href="/learn" className="px-3 py-1.5 text-sm text-muted-foreground rounded-lg hover:bg-muted hover:text-foreground transition-colors">
             Learn
           </Link>
         </div>
@@ -101,15 +105,15 @@ export default async function DashboardPage() {
         {/* Right: stats + sign out */}
         <div className="ml-auto flex items-center gap-3">
           {dbUser.streak > 0 && (
-            <div className="flex items-center gap-1 text-sm font-medium text-orange-500">
+            <div className="flex items-center gap-1 text-sm font-semibold text-orange-500 bg-orange-500/10 px-2.5 py-1 rounded-full">
               <Flame className="w-4 h-4" />
               <span>{dbUser.streak}d</span>
             </div>
           )}
-          <div className="flex items-center gap-1 text-sm text-muted-foreground">
+          <div className="flex items-center gap-1.5 text-sm bg-yellow-500/10 px-2.5 py-1 rounded-full">
             <Star className="w-4 h-4 text-yellow-500" />
-            <span className="font-medium text-foreground">{dbUser.xp}</span>
-            <span>XP</span>
+            <span className="font-semibold text-foreground">{dbUser.xp}</span>
+            <span className="text-muted-foreground">XP</span>
           </div>
           {isAdmin && (
             <Link href="/admin" className="flex items-center gap-1 text-xs bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-400 px-2.5 py-1 rounded-full font-medium hover:opacity-80 transition-opacity">
@@ -126,91 +130,151 @@ export default async function DashboardPage() {
 
       <div className="container mx-auto max-w-5xl py-8 px-4 space-y-8">
 
-        {/* ── Welcome + Level bar ── */}
-        <div className="flex flex-col sm:flex-row sm:items-end gap-4">
-          <div className="flex-1">
-            <h1 className="text-2xl font-bold">
-              Welcome back, {dbUser.name?.split(" ")[0]} 👋
-            </h1>
-            <p className="text-muted-foreground text-sm mt-1">
-              {completedCount === 0
-                ? "Start your SAP learning journey below"
-                : `${completedCount} of ${totalLessons} lessons completed · Keep going!`}
-            </p>
-          </div>
-          {/* Level badge */}
-          <div className="shrink-0 text-right">
-            <div className="text-xs text-muted-foreground mb-1">
-              Level {dbUser.level} · {xpToNextLevel} XP to next level
+        {/* ── Hero: Welcome + Level ── */}
+        <div
+          className="relative rounded-3xl border border-border p-6 md:p-8 overflow-hidden"
+          style={{ background: "linear-gradient(135deg, hsl(var(--card)), hsl(var(--muted)))" }}
+        >
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -top-24 -right-16 w-80 h-80 rounded-full opacity-25 blur-[90px]"
+            style={{ background: "radial-gradient(circle, hsl(var(--primary)), transparent 60%)" }}
+          />
+          <div className="relative flex flex-col md:flex-row md:items-center gap-6">
+            <div className="flex-1">
+              <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
+                Welcome back, {dbUser.name?.split(" ")[0]} <span className="inline-block">👋</span>
+              </h1>
+              <p className="text-muted-foreground mt-1.5">
+                {completedCount === 0
+                  ? "Start your SAP learning journey below."
+                  : `${completedCount} of ${totalLessons} lessons completed · ${overallPct}% of the way there. Keep going!`}
+              </p>
             </div>
-            <div className="w-48 h-2 bg-muted rounded-full overflow-hidden">
-              <div className="h-full bg-primary rounded-full transition-all" style={{ width: `${xpPct}%` }} />
+
+            {/* Level ring + XP */}
+            <div className="shrink-0 w-full md:w-72">
+              <div className="flex items-center gap-4">
+                <div className="relative w-16 h-16 shrink-0">
+                  <div
+                    className="w-16 h-16 rounded-full"
+                    style={{ background: `conic-gradient(hsl(var(--primary)) ${xpPct * 3.6}deg, hsl(var(--muted)) 0deg)` }}
+                  />
+                  <div className="absolute inset-1.5 rounded-full bg-card flex flex-col items-center justify-center">
+                    <span className="text-[10px] text-muted-foreground leading-none">LVL</span>
+                    <span className="text-xl font-bold leading-none">{dbUser.level}</span>
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between text-xs mb-1.5">
+                    <span className="font-medium text-foreground">{xpIntoLevel} / {XP_PER_LEVEL} XP</span>
+                    <span className="text-muted-foreground">{xpToNextLevel} to go</span>
+                  </div>
+                  <div className="h-2.5 bg-muted rounded-full overflow-hidden">
+                    <div
+                      className="h-full rounded-full transition-all"
+                      style={{ width: `${xpPct}%`, background: "linear-gradient(90deg, hsl(var(--primary)), #7C3AED)" }}
+                    />
+                  </div>
+                  <div className="text-[11px] text-muted-foreground mt-1.5">Level {dbUser.level + 1} unlocks next</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* ── Stats ── */}
+        {/* ── Stats: gradient cards ── */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {[
-            { label: "Lessons Done", value: completedCount, icon: BookOpen, color: "text-blue-500", bg: "bg-blue-50 dark:bg-blue-950" },
-            { label: "XP Earned", value: dbUser.xp, icon: Star, color: "text-yellow-500", bg: "bg-yellow-50 dark:bg-yellow-950" },
-            { label: "Day Streak", value: `${dbUser.streak}🔥`, icon: Flame, color: "text-orange-500", bg: "bg-orange-50 dark:bg-orange-950" },
-            { label: "Badges", value: userBadges.length, icon: Trophy, color: "text-purple-500", bg: "bg-purple-50 dark:bg-purple-950" },
-          ].map((stat) => (
-            <div key={stat.label} className="border rounded-xl p-4 bg-card">
-              <div className={`w-8 h-8 rounded-lg ${stat.bg} flex items-center justify-center mb-2`}>
-                <stat.icon className={`w-4 h-4 ${stat.color}`} />
+          {statCards.map((stat) => (
+            <div
+              key={stat.label}
+              className="relative rounded-2xl border border-border bg-card p-4 overflow-hidden"
+            >
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -top-10 -right-10 w-28 h-28 rounded-full opacity-20 blur-2xl"
+                style={{ background: `radial-gradient(circle, ${stat.color}, transparent 70%)` }}
+              />
+              <div
+                className="relative w-9 h-9 rounded-xl flex items-center justify-center mb-3 text-white"
+                style={{ backgroundColor: stat.color, boxShadow: `0 6px 18px -6px ${stat.color}` }}
+              >
+                <stat.icon className="w-4.5 h-4.5" style={{ width: 18, height: 18 }} />
               </div>
-              <div className="text-2xl font-bold">{stat.value}</div>
-              <div className="text-xs text-muted-foreground">{stat.label}</div>
+              <div className="relative text-3xl font-bold tracking-tight">{stat.value}</div>
+              <div className="relative text-xs text-muted-foreground mt-0.5">{stat.label}</div>
             </div>
           ))}
         </div>
 
-        {/* ── Continue Learning ── */}
+        {/* ── Continue Learning — dominant hero card ── */}
         {continueLesson && (
           <div>
-            <h2 className="text-base font-semibold mb-3">Continue Learning</h2>
+            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3 flex items-center gap-2">
+              <Sparkles className="w-4 h-4" /> Pick up where you left off
+            </h2>
             <Link
               href={`/learn/${continueLesson.moduleSlug}/${continueLesson.slug}`}
-              className="flex items-center gap-4 p-4 rounded-xl border hover:shadow-md transition-all group"
-              style={{ borderColor: continueLesson.moduleColor + "40", backgroundColor: continueLesson.moduleColor + "06" }}
+              className="group relative block rounded-3xl border overflow-hidden p-7 md:p-8 transition-transform hover:scale-[1.01]"
+              style={{
+                borderColor: continueLesson.moduleColor + "55",
+                background: `linear-gradient(135deg, ${continueLesson.moduleColor}1f, ${continueLesson.moduleColor}08)`,
+              }}
             >
               <div
-                className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-sm shrink-0"
-                style={{ backgroundColor: continueLesson.moduleColor }}
-              >
-                <Zap className="w-5 h-5" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="text-xs text-muted-foreground mb-0.5">{continueLesson.moduleTitle}</div>
-                <div className="font-semibold text-sm group-hover:text-primary transition-colors truncate">{continueLesson.title}</div>
-                <div className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
-                  <Clock className="w-3 h-3" /> {continueLesson.estimatedMinutes} min
+                aria-hidden
+                className="pointer-events-none absolute -top-20 -right-10 w-72 h-72 rounded-full opacity-30 blur-[80px]"
+                style={{ background: `radial-gradient(circle, ${continueLesson.moduleColor}, transparent 60%)` }}
+              />
+              <div className="relative flex items-center gap-5">
+                <div
+                  className="w-16 h-16 md:w-20 md:h-20 rounded-2xl flex items-center justify-center text-white shrink-0"
+                  style={{ backgroundColor: continueLesson.moduleColor, boxShadow: `0 12px 30px -8px ${continueLesson.moduleColor}` }}
+                >
+                  <Zap className="w-8 h-8 md:w-9 md:h-9" />
                 </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-xs font-medium uppercase tracking-wide mb-1" style={{ color: continueLesson.moduleColor }}>
+                    {continueLesson.moduleTitle}
+                  </div>
+                  <div className="text-xl md:text-2xl font-bold leading-tight truncate">{continueLesson.title}</div>
+                  <div className="text-sm text-muted-foreground flex items-center gap-1.5 mt-2">
+                    <Clock className="w-3.5 h-3.5" /> {continueLesson.estimatedMinutes} min · Continue lesson
+                  </div>
+                </div>
+                <div
+                  className="hidden sm:flex items-center gap-2 text-white font-semibold px-5 py-3 rounded-xl shrink-0 group-hover:gap-3 transition-all"
+                  style={{ backgroundColor: continueLesson.moduleColor }}
+                >
+                  Resume <ArrowRight className="w-4 h-4" />
+                </div>
+                <ChevronRight className="sm:hidden w-6 h-6 shrink-0" style={{ color: continueLesson.moduleColor }} />
               </div>
-              <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
             </Link>
           </div>
         )}
 
         {completedCount === totalLessons && totalLessons > 0 && (
-          <div className="flex items-center gap-3 p-4 rounded-xl border border-emerald-200 bg-emerald-50 dark:bg-emerald-950/30 dark:border-emerald-800">
-            <CheckCircle2 className="w-6 h-6 text-emerald-500 shrink-0" />
+          <div className="flex items-center gap-3 p-5 rounded-2xl border border-emerald-300/60 bg-emerald-50 dark:bg-emerald-950/30 dark:border-emerald-800">
+            <div className="w-11 h-11 rounded-xl bg-emerald-500 flex items-center justify-center shrink-0">
+              <CheckCircle2 className="w-6 h-6 text-white" />
+            </div>
             <div>
-              <div className="font-semibold text-sm text-emerald-800 dark:text-emerald-300">All lessons complete! 🎉</div>
-              <div className="text-xs text-emerald-700 dark:text-emerald-400">More content coming soon.</div>
+              <div className="font-bold text-emerald-800 dark:text-emerald-300">All lessons complete! 🎉</div>
+              <div className="text-sm text-emerald-700 dark:text-emerald-400">More content coming soon.</div>
             </div>
           </div>
         )}
 
-        {/* ── Modules with progress ── */}
+        {/* ── Modules — game map grid ── */}
         <div>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-base font-semibold">All Modules</h2>
-            <Link href="/learn" className="text-sm text-primary hover:underline font-medium">Browse all →</Link>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-bold tracking-tight">Your learning map</h2>
+            <Link href="/learn" className="text-sm text-primary hover:gap-1.5 font-semibold inline-flex items-center gap-1 transition-all">
+              Browse all <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {modules.map((mod) => {
               const total = mod.lessons.length;
               const done = mod.lessons.filter((l) => completedIds.has(l.id)).length;
@@ -219,28 +283,38 @@ export default async function DashboardPage() {
                 <Link
                   key={mod.id}
                   href={`/learn/${mod.slug}`}
-                  className="border rounded-xl p-4 hover:shadow-md transition-all bg-card group flex flex-col gap-3"
+                  className="group relative rounded-2xl border border-border bg-card p-5 overflow-hidden transition-transform hover:-translate-y-1 flex flex-col gap-4"
                 >
+                  <div className="absolute left-0 top-0 bottom-0 w-1" style={{ backgroundColor: mod.color }} />
                   <div className="flex items-center gap-3">
                     <div
-                      className="w-10 h-10 rounded-lg flex items-center justify-center text-xl shrink-0"
-                      style={{ backgroundColor: mod.color + "18", border: `1.5px solid ${mod.color}30` }}
+                      className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shrink-0"
+                      style={{ backgroundColor: mod.color + "1f", border: `1.5px solid ${mod.color}40` }}
                     >
                       {mod.icon}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="font-semibold text-sm group-hover:text-primary transition-colors">{mod.title}</div>
-                      <div className="text-xs text-muted-foreground">{total} lessons</div>
+                      <div className="font-semibold leading-tight group-hover:text-primary transition-colors truncate">{mod.title}</div>
+                      <div className="text-xs text-muted-foreground mt-0.5">{total} lessons</div>
                     </div>
-                    {pct === 100 && <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />}
+                    {pct === 100 ? (
+                      <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center shrink-0">
+                        <CheckCircle2 className="w-4 h-4 text-white" />
+                      </div>
+                    ) : pct > 0 ? (
+                      <span className="text-xs font-semibold shrink-0" style={{ color: mod.color }}>{pct}%</span>
+                    ) : null}
                   </div>
                   <div>
-                    <div className="flex items-center justify-between text-xs text-muted-foreground mb-1">
+                    <div className="flex items-center justify-between text-xs text-muted-foreground mb-1.5">
                       <span>{done}/{total} done</span>
-                      <span>{pct}%</span>
+                      <span>{pct === 0 ? "Not started" : pct === 100 ? "Complete" : "In progress"}</span>
                     </div>
-                    <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-                      <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, backgroundColor: mod.color }} />
+                    <div className="h-2 bg-muted rounded-full overflow-hidden">
+                      <div
+                        className="h-full rounded-full transition-all"
+                        style={{ width: `${pct}%`, backgroundColor: mod.color, boxShadow: pct > 0 ? `0 0 12px ${mod.color}80` : undefined }}
+                      />
                     </div>
                   </div>
                 </Link>
@@ -251,9 +325,9 @@ export default async function DashboardPage() {
 
         {/* ── Badges ── */}
         <div>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-base font-semibold">Badges</h2>
-            <span className="text-xs text-muted-foreground">{userBadges.length}/{allBadges.length} earned</span>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-bold tracking-tight">Badges</h2>
+            <span className="text-xs text-muted-foreground bg-muted px-2.5 py-1 rounded-full font-medium">{userBadges.length}/{allBadges.length} earned</span>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
             {allBadges.map((badge) => {
@@ -262,21 +336,32 @@ export default async function DashboardPage() {
               return (
                 <div
                   key={badge.id}
-                  className={`border rounded-xl p-3 flex flex-col items-center text-center gap-1.5 transition-all ${
-                    earned ? "bg-card shadow-sm" : "bg-muted/30 opacity-50"
+                  className={`relative rounded-2xl border p-4 flex flex-col items-center text-center gap-1.5 overflow-hidden transition-all ${
+                    earned
+                      ? "bg-card border-yellow-400/50 dark:border-yellow-500/40"
+                      : "bg-muted/30 border-border opacity-60"
                   }`}
                   title={earned ? `Earned ${earnedAt ? new Date(earnedAt).toLocaleDateString() : ""}` : "Not yet earned"}
                 >
-                  <div className="text-2xl relative">
+                  {earned && (
+                    <div
+                      aria-hidden
+                      className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 w-24 h-24 rounded-full opacity-40 blur-2xl"
+                      style={{ background: "radial-gradient(circle, #facc15, transparent 70%)" }}
+                    />
+                  )}
+                  <div className={`relative text-3xl ${earned ? "" : "grayscale"}`}>
                     {badge.icon}
                     {!earned && (
-                      <Lock className="w-3 h-3 text-muted-foreground absolute -bottom-0.5 -right-1" />
+                      <span className="absolute -bottom-1 -right-1.5 w-4 h-4 rounded-full bg-background border border-border flex items-center justify-center">
+                        <Lock className="w-2.5 h-2.5 text-muted-foreground" />
+                      </span>
                     )}
                   </div>
-                  <div className="text-xs font-semibold leading-tight">{badge.name}</div>
-                  <div className="text-[10px] text-muted-foreground leading-tight">{badge.description}</div>
+                  <div className="relative text-xs font-semibold leading-tight">{badge.name}</div>
+                  <div className="relative text-[10px] text-muted-foreground leading-tight">{badge.description}</div>
                   {earned && (
-                    <div className="text-[10px] text-yellow-600 dark:text-yellow-400 font-medium">+{badge.xpReward} XP</div>
+                    <div className="relative text-[10px] text-yellow-600 dark:text-yellow-400 font-bold">+{badge.xpReward} XP</div>
                   )}
                 </div>
               );
@@ -288,3 +373,4 @@ export default async function DashboardPage() {
     </div>
   );
 }
+// ─── END FILE ───
