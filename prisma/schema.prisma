@@ -23,6 +23,12 @@ enum DifficultyLevel {
   ADVANCED
 }
 
+enum InterviewImportance {
+  HIGH
+  MEDIUM
+  LOW
+}
+
 // ─────────────────────────────────────────────
 // USER
 // ─────────────────────────────────────────────
@@ -86,11 +92,12 @@ model Lesson {
   keyConceptTitle   String?
   keyConceptBody    String?         @db.Text  // Step 4: SAP link
   // Meta
-  order             Int             @default(0)
-  isPublished       Boolean         @default(false)
-  estimatedMinutes  Int             @default(10)
-  difficulty        DifficultyLevel @default(BEGINNER)
-  xpReward          Int             @default(50)
+  order                Int                 @default(0)
+  isPublished          Boolean             @default(false)
+  estimatedMinutes     Int                 @default(10)
+  difficulty           DifficultyLevel     @default(BEGINNER)
+  xpReward             Int                 @default(50)
+  interviewImportance  InterviewImportance @default(MEDIUM)
   // Relations
   flowchart         Flowchart?
   quiz              Quiz?

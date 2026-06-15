@@ -2,14 +2,9 @@ import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
-import { ChevronRight, Clock, Zap, CheckCircle2, Circle, Lock } from "lucide-react";
+import { ChevronRight, Clock, Zap } from "lucide-react";
+import InterviewFilter from "@/components/InterviewFilter";
 
-const DIFFICULTY_LABELS = { BEGINNER: "Beginner", INTERMEDIATE: "Intermediate", ADVANCED: "Advanced" };
-const DIFFICULTY_COLORS = {
-  BEGINNER: "text-emerald-600 bg-emerald-50 dark:bg-emerald-950 dark:text-emerald-400",
-  INTERMEDIATE: "text-blue-600 bg-blue-50 dark:bg-blue-950 dark:text-blue-400",
-  ADVANCED: "text-purple-600 bg-purple-50 dark:bg-purple-950 dark:text-purple-400",
-};
 
 export default async function ModulePage({ params }: { params: { moduleSlug: string } }) {
   const supabase = createClient();
@@ -25,7 +20,15 @@ export default async function ModulePage({ params }: { params: { moduleSlug: str
       lessons: {
         where: { isPublished: true },
         orderBy: { order: "asc" },
-        include: {
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          order: true,
+          difficulty: true,
+          estimatedMinutes: true,
+          xpReward: true,
+          interviewImportance: true,
           quiz: { select: { id: true } },
           flowchart: { select: { id: true } },
         },
@@ -129,62 +132,25 @@ export default async function ModulePage({ params }: { params: { moduleSlug: str
           </Link>
         )}
 
-        {/* Lesson list */}
-        <div className="space-y-2">
-          {mod.lessons.map((lesson, idx) => {
-            const isDone = completedIds.has(lesson.id);
-            const isCurrent = nextLesson?.id === lesson.id;
-
-            return (
-              <Link
-                key={lesson.id}
-                href={`/learn/${mod.slug}/${lesson.slug}`}
-                className={`flex items-center gap-4 p-4 rounded-xl border transition-all group ${
-                  isCurrent
-                    ? "border-primary/40 bg-primary/5"
-                    : isDone
-                    ? "border-emerald-200 bg-emerald-50/50 dark:border-emerald-900 dark:bg-emerald-950/30"
-                    : "bg-card hover:bg-muted/30"
-                }`}
-              >
-                {/* Step indicator */}
-                <div className="shrink-0">
-                  {isDone ? (
-                    <CheckCircle2 className="w-5 h-5 text-emerald-500" />
-                  ) : isCurrent ? (
-                    <div className="w-5 h-5 rounded-full border-2 flex items-center justify-center" style={{ borderColor: mod.color }}>
-                      <div className="w-2 h-2 rounded-full" style={{ backgroundColor: mod.color }} />
-                    </div>
-                  ) : (
-                    <div className="w-5 h-5 rounded-full border-2 border-muted-foreground/30 flex items-center justify-center">
-                      <span className="text-[10px] text-muted-foreground font-medium">{idx + 1}</span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Lesson info */}
-                <div className="flex-1 min-w-0">
-                  <div className="font-medium text-sm group-hover:text-primary transition-colors truncate">{lesson.title}</div>
-                  <div className="flex items-center gap-2 mt-0.5">
-                    <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${DIFFICULTY_COLORS[lesson.difficulty as keyof typeof DIFFICULTY_COLORS]}`}>
-                      {DIFFICULTY_LABELS[lesson.difficulty as keyof typeof DIFFICULTY_LABELS]}
-                    </span>
-                    <span className="text-xs text-muted-foreground flex items-center gap-0.5">
-                      <Clock className="w-3 h-3" /> {lesson.estimatedMinutes}m
-                    </span>
-                    <span className="text-xs text-muted-foreground flex items-center gap-0.5">
-                      <Zap className="w-3 h-3 text-yellow-500" /> {lesson.xpReward}
-                    </span>
-                    {lesson.quiz && <span className="text-xs text-blue-500">· quiz</span>}
-                    {lesson.flowchart && <span className="text-xs text-purple-500">· flowchart</span>}
-                  </div>
-                </div>
-
-                <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
-              </Link>
-            );
-          })}
-        </div>
+        {/* Lesson list with interview filter */}
+        <InterviewFilter
+          moduleSlug={mod.slug}
+          moduleColor={mod.color}
+          lessons={mod.lessons.map((l) => ({
+            id: l.id,
+            title: l.title,
+            slug: l.slug,
+            order: l.order,
+            difficulty: l.difficulty,
+            estimatedMinutes: l.estimatedMinutes,
+            xpReward: l.xpReward,
+            interviewImportance: l.interviewImportance,
+            hasQuiz: !!l.quiz,
+            hasFlowchart: !!l.flowchart,
+            isCompleted: completedIds.has(l.id),
+            isCurrent: nextLesson?.id === l.id,
+          }))}
+        />
       </div>
     </div>
   );
