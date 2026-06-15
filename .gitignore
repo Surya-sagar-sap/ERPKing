@@ -32,3 +32,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 erpking.env
+
+# Opus prompt files (content generation — not needed in repo)
+opus-prompt-*.md
+
+# Seed backup files
+prisma/seed.ts.bak*
