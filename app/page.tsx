@@ -2,9 +2,10 @@
 import Link from "next/link";
 import {
   ArrowRight, BookOpen, Zap, Trophy, BarChart3, CheckCircle,
-  Sparkles, Layers, GraduationCap, Flame, Star, PlayCircle,
+  Sparkles, Layers, GraduationCap, PlayCircle,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
+import SapArchitectureFlow from "@/components/SapArchitectureFlow";
 
 export default async function LandingPage() {
   const supabase = createClient();
@@ -47,9 +48,9 @@ export default async function LandingPage() {
   ];
 
   const stats = [
-    { value: "16", label: "SAP Modules", icon: <Layers className="w-4 h-4" /> },
-    { value: "110+", label: "Lessons", icon: <BookOpen className="w-4 h-4" /> },
-    { value: "330+", label: "Quiz Questions", icon: <GraduationCap className="w-4 h-4" /> },
+    { value: "12", label: "SAP Modules", icon: <Layers className="w-4 h-4" /> },
+    { value: "195+", label: "Lessons", icon: <BookOpen className="w-4 h-4" /> },
+    { value: "585+", label: "Quiz Questions", icon: <GraduationCap className="w-4 h-4" /> },
     { value: "XP", label: "& Badges", icon: <Trophy className="w-4 h-4" /> },
   ];
 
@@ -58,7 +59,7 @@ export default async function LandingPage() {
 
       {/* ── NAVBAR ── */}
       <nav className="border-b border-border/60 sticky top-0 bg-background/80 backdrop-blur-xl z-50">
-        <div className="container mx-auto px-6 flex items-center h-16">
+        <div className="max-w-7xl mx-auto px-6 w-full flex items-center h-16">
           <Link href="/" className="flex items-center gap-2.5 shrink-0">
             <div
               className="w-9 h-9 rounded-xl flex items-center justify-center shadow-lg"
@@ -123,7 +124,7 @@ export default async function LandingPage() {
           {/* Left: copy */}
           <div className="text-center lg:text-left">
             <div className="inline-flex items-center gap-2 bg-primary/10 text-primary border border-primary/20 px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-              <Sparkles className="w-3.5 h-3.5" /> 16 SAP modules · 110+ interactive lessons
+              <Sparkles className="w-3.5 h-3.5" /> 12 SAP modules · 195+ interactive lessons
             </div>
             <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-6 leading-[1.05]">
               Learn SAP the way it{" "}
@@ -160,55 +161,21 @@ export default async function LandingPage() {
             </div>
           </div>
 
-          {/* Right: faux product window */}
+          {/* Right: live SAP architecture flowchart */}
           <div className="relative">
             <div
-              className="rounded-2xl border border-border bg-card/80 backdrop-blur-xl p-5 shadow-2xl"
+              className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl"
               style={{ boxShadow: "0 30px 80px -20px rgba(0,0,0,0.45)" }}
             >
-              {/* window chrome */}
-              <div className="flex items-center gap-1.5 mb-4">
-                <span className="w-3 h-3 rounded-full bg-red-400/80" />
-                <span className="w-3 h-3 rounded-full bg-amber-400/80" />
-                <span className="w-3 h-3 rounded-full bg-emerald-400/80" />
-                <span className="ml-3 text-xs text-muted-foreground">SAPKing · Dashboard</span>
-              </div>
-
-              {/* XP strip */}
-              <div className="rounded-xl border border-border bg-background/60 p-4 mb-4">
-                <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
-                  <span className="flex items-center gap-1.5 font-medium text-foreground"><Star className="w-3.5 h-3.5 text-yellow-500" /> Level 4</span>
-                  <span className="flex items-center gap-1.5"><Flame className="w-3.5 h-3.5 text-orange-500" /> 7-day streak</span>
-                </div>
-                <div className="h-2.5 rounded-full bg-muted overflow-hidden">
-                  <div className="h-full rounded-full" style={{ width: "68%", background: "linear-gradient(90deg, hsl(var(--primary)), #7C3AED)" }} />
-                </div>
-              </div>
-
-              {/* module tiles */}
-              <div className="grid grid-cols-2 gap-3">
-                {modules.slice(0, 4).map((m, i) => (
-                  <div key={m.name} className="rounded-xl border border-border bg-background/60 p-3">
-                    <div className="flex items-center gap-2 mb-2.5">
-                      <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-[11px] font-bold" style={{ backgroundColor: m.color }}>
-                        {m.name.split(" ")[1]}
-                      </div>
-                      <span className="text-xs font-semibold truncate">{m.name}</span>
-                    </div>
-                    <div className="h-1.5 rounded-full bg-muted overflow-hidden">
-                      <div className="h-full rounded-full" style={{ width: `${[80, 45, 100, 30][i]}%`, backgroundColor: m.color }} />
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <SapArchitectureFlow />
             </div>
 
             {/* floating badge */}
             <div className="absolute -bottom-5 -left-5 hidden sm:flex items-center gap-2 rounded-xl border border-border bg-card px-3.5 py-2.5 shadow-xl">
               <Trophy className="w-5 h-5 text-yellow-500" />
               <div className="leading-tight">
-                <div className="text-xs font-semibold">Badge unlocked</div>
-                <div className="text-[10px] text-muted-foreground">FICO Starter · +100 XP</div>
+                <div className="text-xs font-semibold">End-to-end SAP</div>
+                <div className="text-[10px] text-muted-foreground">Processes → Core → Tech</div>
               </div>
             </div>
           </div>

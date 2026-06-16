@@ -54,7 +54,8 @@ export default async function ModulePage({ params }: { params: { moduleSlug: str
   return (
     <div className="min-h-screen bg-background">
       {/* Navbar */}
-      <nav className="border-b px-6 h-14 flex items-center bg-card sticky top-0 z-10 text-sm">
+      <nav className="border-b h-14 bg-card sticky top-0 z-10 text-sm w-full">
+        <div className="max-w-7xl mx-auto px-6 h-full flex items-center">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-1.5 shrink-0">
           <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center">
@@ -81,6 +82,7 @@ export default async function ModulePage({ params }: { params: { moduleSlug: str
               Sign out
             </button>
           </form>
+        </div>
         </div>
       </nav>
 

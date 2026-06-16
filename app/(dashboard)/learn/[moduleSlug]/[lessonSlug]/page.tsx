@@ -69,7 +69,8 @@ export default async function LessonPage({
   return (
     <div className="min-h-screen bg-background">
       {/* Navbar */}
-      <nav className="border-b border-border/60 px-6 py-3 flex items-center gap-2 bg-background/80 backdrop-blur-xl sticky top-0 z-20 text-sm">
+      <nav className="border-b border-border/60 bg-background/80 backdrop-blur-xl sticky top-0 z-20 text-sm w-full">
+        <div className="max-w-7xl mx-auto px-6 py-3 flex items-center gap-2">
         <Link href="/" className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors shrink-0">
           <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)" }}>
             <span className="text-white font-bold text-[10px]">S</span>
@@ -97,6 +98,7 @@ export default async function LessonPage({
               <CheckCircle2 className="w-3.5 h-3.5" /> Done
             </span>
           )}
+        </div>
         </div>
       </nav>
 

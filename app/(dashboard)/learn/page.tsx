@@ -40,7 +40,8 @@ export default async function LearnPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Navbar */}
-      <nav className="border-b border-border/60 px-6 h-14 flex items-center bg-background/80 backdrop-blur-xl sticky top-0 z-10">
+      <nav className="border-b border-border/60 h-14 bg-background/80 backdrop-blur-xl sticky top-0 z-10 w-full">
+        <div className="max-w-7xl mx-auto px-6 h-full flex items-center">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 shrink-0">
           <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)" }}>
@@ -66,6 +67,7 @@ export default async function LearnPage() {
               Sign out
             </button>
           </form>
+        </div>
         </div>
       </nav>
 
