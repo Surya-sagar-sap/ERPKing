@@ -58,16 +58,16 @@ export default async function LandingPage() {
     <div className="min-h-screen bg-background text-foreground">
 
       {/* ── NAVBAR ── */}
-      <nav className="border-b border-border/60 sticky top-0 bg-background/80 backdrop-blur-xl z-50">
-        <div className="max-w-7xl mx-auto px-6 w-full flex items-center h-16">
-          <Link href="/" className="flex items-center gap-2.5 shrink-0">
+      <nav className="border-b border-border/60 sticky top-0 bg-background/80 backdrop-blur-xl z-50 h-14 w-full">
+        <div className="max-w-7xl mx-auto px-6 w-full flex items-center h-full">
+          <Link href="/" className="flex items-center gap-2 shrink-0">
             <div
-              className="w-9 h-9 rounded-xl flex items-center justify-center shadow-lg"
-              style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)", boxShadow: "0 4px 20px -4px rgba(124,58,237,0.5)" }}
+              className="w-8 h-8 rounded-lg flex items-center justify-center"
+              style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)" }}
             >
               <span className="text-white font-bold text-sm">S</span>
             </div>
-            <span className="font-bold text-xl tracking-tight">SAPKing</span>
+            <span className="font-bold text-base">SAPKing</span>
           </Link>
 
           <div className="hidden md:flex items-center gap-0.5 ml-8">

@@ -50,8 +50,7 @@ export default function UserMenu({ name, email, isAdmin = false }: UserMenuProps
         aria-expanded={open}
         aria-haspopup="menu"
         aria-label="Open user menu"
-        className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold transition-shadow hover:ring-2 hover:ring-primary/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
-        style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)" }}
+        className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-shadow hover:ring-2 hover:ring-border focus:outline-none focus-visible:ring-2 focus-visible:ring-border bg-muted text-foreground border border-border"
       >
         {initial}
       </button>
