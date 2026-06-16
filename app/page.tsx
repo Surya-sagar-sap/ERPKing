@@ -4,8 +4,12 @@ import {
   ArrowRight, BookOpen, Zap, Trophy, BarChart3, CheckCircle,
   Sparkles, Layers, GraduationCap, Flame, Star, PlayCircle,
 } from "lucide-react";
+import { createClient } from "@/lib/supabase/server";
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const isLoggedIn = !!user;
   const modules = [
     { name: "SAP FICO", desc: "Finance & Controlling", color: "#2563EB", lessons: 8 },
     { name: "SAP MM", desc: "Materials Management", color: "#16A34A", lessons: 8 },
@@ -72,14 +76,26 @@ export default function LandingPage() {
           </div>
 
           <div className="ml-auto flex items-center gap-2">
-            <Link href="/login" className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted">Sign in</Link>
-            <Link
-              href="/register"
-              className="flex items-center gap-1.5 text-white px-4 py-2 rounded-lg text-sm font-medium transition-transform hover:scale-[1.03]"
-              style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)", boxShadow: "0 4px 20px -6px rgba(124,58,237,0.6)" }}
-            >
-              Get started free
-            </Link>
+            {isLoggedIn ? (
+              <Link
+                href="/dashboard"
+                className="flex items-center gap-1.5 text-white px-4 py-2 rounded-lg text-sm font-medium transition-transform hover:scale-[1.03]"
+                style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)", boxShadow: "0 4px 20px -6px rgba(124,58,237,0.6)" }}
+              >
+                Go to Dashboard
+              </Link>
+            ) : (
+              <>
+                <Link href="/login" className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted">Sign in</Link>
+                <Link
+                  href="/register"
+                  className="flex items-center gap-1.5 text-white px-4 py-2 rounded-lg text-sm font-medium transition-transform hover:scale-[1.03]"
+                  style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)", boxShadow: "0 4px 20px -6px rgba(124,58,237,0.6)" }}
+                >
+                  Get started free
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </nav>
@@ -121,11 +137,11 @@ export default function LandingPage() {
             </p>
             <div className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-3">
               <Link
-                href="/register"
+                href={isLoggedIn ? "/dashboard" : "/register"}
                 className="flex items-center gap-2 text-white px-7 py-3.5 rounded-xl font-semibold text-lg transition-transform hover:scale-[1.03]"
                 style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)", boxShadow: "0 10px 40px -10px rgba(124,58,237,0.6)" }}
               >
-                Start learning free <ArrowRight className="w-5 h-5" />
+                {isLoggedIn ? "Go to Dashboard" : "Start learning free"} <ArrowRight className="w-5 h-5" />
               </Link>
               <Link
                 href="/learn"
@@ -335,11 +351,11 @@ export default function LandingPage() {
             Start free today. No credit card, no experience needed. Just you and SAP — finally made simple.
           </p>
           <Link
-            href="/register"
+            href={isLoggedIn ? "/dashboard" : "/register"}
             className="relative inline-flex items-center gap-2 text-white px-10 py-4 rounded-xl font-semibold text-lg transition-transform hover:scale-[1.03]"
             style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)", boxShadow: "0 12px 40px -10px rgba(124,58,237,0.6)" }}
           >
-            Start for free <ArrowRight className="w-5 h-5" />
+            {isLoggedIn ? "Go to Dashboard" : "Start for free"} <ArrowRight className="w-5 h-5" />
           </Link>
         </div>
       </section>
