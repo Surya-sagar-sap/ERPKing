@@ -44,8 +44,8 @@ export default async function LearnPage() {
         <div className="max-w-7xl mx-auto px-6 h-full flex items-center">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 shrink-0">
-          <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)" }}>
-            <span className="text-white font-bold text-xs">S</span>
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)" }}>
+            <span className="text-white font-bold text-sm">S</span>
           </div>
           <span className="font-bold text-base">SAPKing</span>
         </Link>
@@ -55,15 +55,16 @@ export default async function LearnPage() {
           <Link href="/dashboard" className="px-3 py-1.5 text-sm text-muted-foreground rounded-lg hover:bg-muted hover:text-foreground transition-colors">
             Dashboard
           </Link>
-          <Link href="/learn" className="px-3 py-1.5 text-sm font-medium rounded-lg bg-muted transition-colors">
+          <Link href="/learn" className="px-3 py-1.5 text-sm font-medium rounded-lg bg-background shadow-sm border border-border text-foreground transition-colors">
             Learn
           </Link>
         </div>
 
         {/* Right */}
         <div className="ml-auto flex items-center gap-3">
+          <span aria-hidden className="w-px h-4 bg-border" />
           <form action="/api/auth/logout" method="POST">
-            <button className="text-sm text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded hover:bg-muted">
+            <button className="text-sm text-muted-foreground hover:text-red-400 transition-colors px-2 py-1 rounded hover:bg-muted">
               Sign out
             </button>
           </form>

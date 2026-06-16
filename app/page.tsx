@@ -70,17 +70,17 @@ export default async function LandingPage() {
             <span className="font-bold text-xl tracking-tight">SAPKing</span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-1 ml-10">
-            <a href="#features" className="px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors">Features</a>
-            <a href="#modules" className="px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors">Modules</a>
-            <a href="#method" className="px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors">How it works</a>
+          <div className="hidden md:flex items-center gap-0.5 ml-8">
+            <a href="#features" className="px-4 py-1.5 text-sm text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors">Features</a>
+            <a href="#modules" className="px-4 py-1.5 text-sm text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors">Modules</a>
+            <a href="#method" className="px-4 py-1.5 text-sm text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors">How it works</a>
           </div>
 
           <div className="ml-auto flex items-center gap-2">
             {isLoggedIn ? (
               <Link
                 href="/dashboard"
-                className="flex items-center gap-1.5 text-white px-4 py-2 rounded-lg text-sm font-medium transition-transform hover:scale-[1.03]"
+                className="flex items-center gap-1.5 text-white px-5 py-2 rounded-full text-sm font-medium transition-transform hover:scale-[1.03]"
                 style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)", boxShadow: "0 4px 20px -6px rgba(124,58,237,0.6)" }}
               >
                 Go to Dashboard
@@ -88,9 +88,10 @@ export default async function LandingPage() {
             ) : (
               <>
                 <Link href="/login" className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted">Sign in</Link>
+                <span aria-hidden className="w-px h-5 bg-border mx-1" />
                 <Link
                   href="/register"
-                  className="flex items-center gap-1.5 text-white px-4 py-2 rounded-lg text-sm font-medium transition-transform hover:scale-[1.03]"
+                  className="flex items-center gap-1.5 text-white px-5 py-2 rounded-full text-sm font-medium transition-transform hover:scale-[1.03]"
                   style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)", boxShadow: "0 4px 20px -6px rgba(124,58,237,0.6)" }}
                 >
                   Get started free
