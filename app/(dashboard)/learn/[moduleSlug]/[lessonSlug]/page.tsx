@@ -7,6 +7,7 @@ import { ChevronRight, Clock, Zap, ChevronLeft, ChevronRight as ChevronRightIcon
 import LessonContent from "@/components/lesson/LessonContent";
 import CompleteButton from "@/components/lesson/CompleteButton";
 import FlowchartViewer from "@/components/flowchart/FlowchartViewer";
+import UserMenu from "@/components/UserMenu";
 import type { Node, Edge } from "reactflow";
 
 export default async function LessonPage({
@@ -20,6 +21,8 @@ export default async function LessonPage({
 
   const dbUser = await prisma.user.findUnique({ where: { email: user.email! } });
   if (!dbUser) redirect("/dashboard");
+
+  const isAdmin = dbUser.role === "ADMIN";
 
   const mod = await prisma.module.findUnique({
     where: { slug: params.moduleSlug },
@@ -98,6 +101,7 @@ export default async function LessonPage({
               <CheckCircle2 className="w-3.5 h-3.5" /> Done
             </span>
           )}
+          <UserMenu name={dbUser.name ?? "Learner"} email={dbUser.email} isAdmin={isAdmin} />
         </div>
         </div>
       </nav>

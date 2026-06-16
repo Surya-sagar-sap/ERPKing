@@ -5,6 +5,8 @@ import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { BookOpen, Clock, ChevronRight, ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
+import UserMenu from "@/components/UserMenu";
+import NavPills from "@/components/NavPills";
 
 export const metadata: Metadata = {
   title: "All Modules",
@@ -18,6 +20,8 @@ export default async function LearnPage() {
 
   const dbUser = await prisma.user.findUnique({ where: { email: user.email! } });
   if (!dbUser) redirect("/dashboard");
+
+  const isAdmin = dbUser.role === "ADMIN";
 
   const modules = await prisma.module.findMany({
     where: { isPublished: true },
@@ -60,14 +64,10 @@ export default async function LearnPage() {
           </Link>
         </div>
 
-        {/* Right */}
-        <div className="ml-auto flex items-center gap-3">
-          <span aria-hidden className="w-px h-4 bg-border" />
-          <form action="/api/auth/logout" method="POST">
-            <button className="text-sm text-muted-foreground hover:text-red-400 transition-colors px-2 py-1 rounded hover:bg-muted">
-              Sign out
-            </button>
-          </form>
+        {/* Right: keep streak/XP pills visible + avatar dropdown */}
+        <div className="ml-auto flex items-center gap-2">
+          <NavPills xp={dbUser.xp} streak={dbUser.streak} />
+          <UserMenu name={dbUser.name ?? "Learner"} email={dbUser.email} isAdmin={isAdmin} />
         </div>
         </div>
       </nav>

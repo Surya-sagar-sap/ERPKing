@@ -4,6 +4,8 @@ import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronRight, Clock, Zap } from "lucide-react";
 import InterviewFilter from "@/components/InterviewFilter";
+import UserMenu from "@/components/UserMenu";
+import NavPills from "@/components/NavPills";
 
 
 export default async function ModulePage({ params }: { params: { moduleSlug: string } }) {
@@ -13,6 +15,8 @@ export default async function ModulePage({ params }: { params: { moduleSlug: str
 
   const dbUser = await prisma.user.findUnique({ where: { email: user.email! } });
   if (!dbUser) redirect("/dashboard");
+
+  const isAdmin = dbUser.role === "ADMIN";
 
   const mod = await prisma.module.findUnique({
     where: { slug: params.moduleSlug },
@@ -72,17 +76,10 @@ export default async function ModulePage({ params }: { params: { moduleSlug: str
           <span className="text-foreground font-medium truncate max-w-[200px]">{mod.title}</span>
         </div>
 
-        {/* Right */}
-        <div className="ml-auto flex items-center gap-3 shrink-0">
-          <Link href="/dashboard" className="text-xs text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded hover:bg-muted hidden sm:block">
-            Dashboard
-          </Link>
-          <span aria-hidden className="w-px h-4 bg-border" />
-          <form action="/api/auth/logout" method="POST">
-            <button className="text-xs text-muted-foreground hover:text-red-400 transition-colors px-2 py-1 rounded hover:bg-muted">
-              Sign out
-            </button>
-          </form>
+        {/* Right: keep streak/XP pills visible + avatar dropdown */}
+        <div className="ml-auto flex items-center gap-2 shrink-0">
+          <NavPills xp={dbUser.xp} streak={dbUser.streak} />
+          <UserMenu name={dbUser.name ?? "Learner"} email={dbUser.email} isAdmin={isAdmin} />
         </div>
         </div>
       </nav>

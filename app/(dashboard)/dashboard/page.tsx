@@ -5,8 +5,10 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import {
   BookOpen, Trophy, Flame, Star, ChevronRight,
-  Zap, Shield, Lock, CheckCircle2, Clock, ArrowRight, Sparkles,
+  Zap, Lock, CheckCircle2, Clock, ArrowRight, Sparkles,
 } from "lucide-react";
+import UserMenu from "@/components/UserMenu";
+import NavPills from "@/components/NavPills";
 
 const XP_PER_LEVEL = 500;
 
@@ -103,30 +105,10 @@ export default async function DashboardPage() {
           </Link>
         </div>
 
-        {/* Right: stats + sign out */}
-        <div className="ml-auto flex items-center gap-3">
-          {dbUser.streak > 0 && (
-            <div className="flex items-center gap-1 text-sm font-semibold text-orange-500 bg-orange-500/10 px-2.5 py-1 rounded-full">
-              <Flame className="w-4 h-4" />
-              <span>{dbUser.streak}d</span>
-            </div>
-          )}
-          <div className="flex items-center gap-1.5 text-sm bg-yellow-500/10 px-2.5 py-1 rounded-full">
-            <Star className="w-4 h-4 text-yellow-500" />
-            <span className="font-semibold text-foreground">{dbUser.xp}</span>
-            <span className="text-muted-foreground">XP</span>
-          </div>
-          {isAdmin && (
-            <Link href="/admin" className="flex items-center gap-1 text-xs bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-400 px-2.5 py-1 rounded-full font-medium hover:opacity-80 transition-opacity">
-              <Shield className="w-3 h-3" /> Admin
-            </Link>
-          )}
-          <span aria-hidden className="w-px h-4 bg-border" />
-          <form action="/api/auth/logout" method="POST">
-            <button className="text-sm text-muted-foreground hover:text-red-400 transition-colors px-2 py-1 rounded hover:bg-muted">
-              Sign out
-            </button>
-          </form>
+        {/* Right: keep streak/XP pills visible + avatar dropdown */}
+        <div className="ml-auto flex items-center gap-2">
+          <NavPills xp={dbUser.xp} streak={dbUser.streak} />
+          <UserMenu name={dbUser.name ?? "Learner"} email={dbUser.email} isAdmin={isAdmin} />
         </div>
         </div>
       </nav>
