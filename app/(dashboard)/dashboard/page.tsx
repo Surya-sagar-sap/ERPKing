@@ -7,8 +7,7 @@ import {
   BookOpen, Trophy, Flame, Star, ChevronRight,
   Zap, Lock, CheckCircle2, Clock, ArrowRight, Sparkles,
 } from "lucide-react";
-import UserMenu from "@/components/UserMenu";
-import NavPills from "@/components/NavPills";
+import AppNav from "@/components/AppNav";
 
 const XP_PER_LEVEL = 500;
 
@@ -85,33 +84,14 @@ export default async function DashboardPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Navbar */}
-      <nav className="border-b border-border/60 bg-background/80 backdrop-blur-xl sticky top-0 z-10 w-full h-14">
-        <div className="max-w-7xl mx-auto px-6 h-full flex items-center">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 shrink-0">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)" }}>
-            <span className="text-white font-bold text-sm">S</span>
-          </div>
-          <span className="font-bold text-base">SAPKing</span>
-        </Link>
-
-        {/* Nav links */}
-        <div className="hidden sm:flex items-center gap-1 ml-6">
-          <Link href="/dashboard" className="px-3 py-1.5 text-sm font-medium rounded-lg bg-background shadow-sm border border-border text-foreground transition-colors">
-            Dashboard
-          </Link>
-          <Link href="/learn" className="px-3 py-1.5 text-sm text-muted-foreground rounded-lg hover:bg-muted hover:text-foreground transition-colors">
-            Learn
-          </Link>
-        </div>
-
-        {/* Right: keep streak/XP pills visible + avatar dropdown */}
-        <div className="ml-auto flex items-center gap-2">
-          <NavPills xp={dbUser.xp} streak={dbUser.streak} />
-          <UserMenu name={dbUser.name ?? "Learner"} email={dbUser.email} isAdmin={isAdmin} />
-        </div>
-        </div>
-      </nav>
+      <AppNav
+        name={dbUser.name ?? "Learner"}
+        email={dbUser.email}
+        isAdmin={isAdmin}
+        xp={dbUser.xp}
+        streak={dbUser.streak}
+        active="dashboard"
+      />
 
       <div className="container mx-auto max-w-5xl py-8 px-4 space-y-8">
 

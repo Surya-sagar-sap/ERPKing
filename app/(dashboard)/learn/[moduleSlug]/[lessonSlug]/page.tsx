@@ -3,11 +3,11 @@ import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
-import { ChevronRight, Clock, Zap, ChevronLeft, ChevronRight as ChevronRightIcon, BookOpen, Lightbulb, CheckCircle2, Circle, Briefcase } from "lucide-react";
+import { Clock, Zap, ChevronLeft, ChevronRight as ChevronRightIcon, BookOpen, Lightbulb, CheckCircle2, Circle, Briefcase } from "lucide-react";
 import LessonContent from "@/components/lesson/LessonContent";
 import CompleteButton from "@/components/lesson/CompleteButton";
 import FlowchartViewer from "@/components/flowchart/FlowchartViewer";
-import UserMenu from "@/components/UserMenu";
+import AppNav from "@/components/AppNav";
 import type { Node, Edge } from "reactflow";
 
 export default async function LessonPage({
@@ -72,39 +72,32 @@ export default async function LessonPage({
   return (
     <div className="min-h-screen bg-background">
       {/* Navbar */}
-      <nav className="border-b border-border/60 h-14 bg-background/80 backdrop-blur-xl sticky top-0 z-20 text-sm w-full">
-        <div className="max-w-7xl mx-auto px-6 h-full flex items-center gap-2">
-        <Link href="/" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors shrink-0">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)" }}>
-            <span className="text-white font-bold text-sm">S</span>
-          </div>
-          <span className="font-bold text-sm text-foreground">SAPKing</span>
-        </Link>
-        <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />
-        <Link href="/learn" className="text-muted-foreground hover:text-foreground transition-colors">Modules</Link>
-        <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />
-        <Link href={`/learn/${mod.slug}`} className="text-muted-foreground hover:text-foreground transition-colors truncate max-w-[120px]">
-          {mod.title}
-        </Link>
-        <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />
-        <span className="font-medium truncate max-w-[200px]">{lesson.title}</span>
-
-        <div className="ml-auto flex items-center gap-2 shrink-0">
-          <span className="text-xs text-muted-foreground hidden sm:flex items-center gap-1 bg-muted px-2.5 py-1 rounded-full">
-            <Clock className="w-3 h-3" /> {lesson.estimatedMinutes} min
-          </span>
-          <span className="text-xs flex items-center gap-1 bg-yellow-500/10 px-2.5 py-1 rounded-full">
-            <Zap className="w-3 h-3 text-yellow-500" /> {lesson.xpReward} XP
-          </span>
-          {isCompleted && (
-            <span className="text-xs text-emerald-600 dark:text-emerald-400 flex items-center gap-1 font-medium bg-emerald-500/10 px-2.5 py-1 rounded-full">
-              <CheckCircle2 className="w-3.5 h-3.5" /> Done
+      <AppNav
+        name={dbUser.name ?? "Learner"}
+        email={dbUser.email}
+        isAdmin={isAdmin}
+        showPills={false}
+        breadcrumbs={[
+          { label: "Modules", href: "/learn" },
+          { label: mod.title, href: `/learn/${mod.slug}` },
+          { label: lesson.title },
+        ]}
+        rightExtra={
+          <>
+            <span className="text-xs text-muted-foreground hidden sm:flex items-center gap-1 bg-muted px-2.5 py-1 rounded-full">
+              <Clock className="w-3 h-3" /> {lesson.estimatedMinutes} min
             </span>
-          )}
-          <UserMenu name={dbUser.name ?? "Learner"} email={dbUser.email} isAdmin={isAdmin} />
-        </div>
-        </div>
-      </nav>
+            <span className="text-xs flex items-center gap-1 bg-yellow-500/10 px-2.5 py-1 rounded-full">
+              <Zap className="w-3 h-3 text-yellow-500" /> {lesson.xpReward} XP
+            </span>
+            {isCompleted && (
+              <span className="text-xs text-emerald-600 dark:text-emerald-400 flex items-center gap-1 font-medium bg-emerald-500/10 px-2.5 py-1 rounded-full">
+                <CheckCircle2 className="w-3.5 h-3.5" /> Done
+              </span>
+            )}
+          </>
+        }
+      />
 
       {/* Lesson progress strip */}
       <div className="h-1.5 bg-muted sticky top-[57px] z-10">

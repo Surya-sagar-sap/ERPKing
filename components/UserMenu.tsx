@@ -59,14 +59,11 @@ export default function UserMenu({ name, email, isAdmin = false }: UserMenuProps
       {open && (
         <div
           role="menu"
-          className="absolute right-0 top-full mt-2 z-50 w-56 rounded-xl border border-border bg-popover shadow-xl py-1 origin-top-right opacity-100 translate-y-0 transition-all duration-150 animate-in"
+          className="absolute right-0 top-full mt-2 z-50 w-56 rounded-xl border border-border bg-popover text-popover-foreground shadow-xl py-1 origin-top-right animate-in fade-in-0 zoom-in-95 slide-in-from-top-1 duration-150"
         >
           {/* Identity header (non-clickable) */}
           <div className="flex items-center gap-3 px-3 py-3">
-            <div
-              className="w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-bold shrink-0"
-              style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)" }}
-            >
+            <div className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold shrink-0 bg-muted text-foreground border border-border">
               {initial}
             </div>
             <div className="min-w-0">

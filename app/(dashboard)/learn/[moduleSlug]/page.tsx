@@ -2,10 +2,9 @@ import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
-import { ChevronRight, Clock, Zap } from "lucide-react";
+import { Clock, Zap } from "lucide-react";
 import InterviewFilter from "@/components/InterviewFilter";
-import UserMenu from "@/components/UserMenu";
-import NavPills from "@/components/NavPills";
+import AppNav from "@/components/AppNav";
 
 
 export default async function ModulePage({ params }: { params: { moduleSlug: string } }) {
@@ -58,31 +57,17 @@ export default async function ModulePage({ params }: { params: { moduleSlug: str
   return (
     <div className="min-h-screen bg-background">
       {/* Navbar */}
-      <nav className="border-b border-border/60 h-14 bg-background/80 backdrop-blur-xl sticky top-0 z-10 text-sm w-full">
-        <div className="max-w-7xl mx-auto px-6 h-full flex items-center">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 shrink-0">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)" }}>
-            <span className="text-white font-bold text-sm">S</span>
-          </div>
-          <span className="font-bold text-base">SAPKing</span>
-        </Link>
-
-        {/* Breadcrumb */}
-        <div className="hidden sm:flex items-center gap-1.5 ml-4 text-muted-foreground">
-          <ChevronRight className="w-3.5 h-3.5" />
-          <Link href="/learn" className="hover:text-foreground transition-colors">Learn</Link>
-          <ChevronRight className="w-3.5 h-3.5" />
-          <span className="text-foreground font-medium truncate max-w-[200px]">{mod.title}</span>
-        </div>
-
-        {/* Right: keep streak/XP pills visible + avatar dropdown */}
-        <div className="ml-auto flex items-center gap-2 shrink-0">
-          <NavPills xp={dbUser.xp} streak={dbUser.streak} />
-          <UserMenu name={dbUser.name ?? "Learner"} email={dbUser.email} isAdmin={isAdmin} />
-        </div>
-        </div>
-      </nav>
+      <AppNav
+        name={dbUser.name ?? "Learner"}
+        email={dbUser.email}
+        isAdmin={isAdmin}
+        xp={dbUser.xp}
+        streak={dbUser.streak}
+        breadcrumbs={[
+          { label: "Learn", href: "/learn" },
+          { label: mod.title },
+        ]}
+      />
 
       <div className="container mx-auto max-w-3xl py-10 px-4">
         {/* Module header */}
