@@ -1,5 +1,6 @@
 // ─── FILE: app/page.tsx ───
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import {
   ArrowRight, BookOpen, Zap, Trophy, BarChart3, CheckCircle,
   Sparkles, Layers, GraduationCap, PlayCircle,
@@ -10,7 +11,9 @@ import SapArchitectureFlow from "@/components/SapArchitectureFlow";
 export default async function LandingPage() {
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  const isLoggedIn = !!user;
+  // Logged-in users skip the marketing page and go straight to the app.
+  if (user) redirect("/dashboard");
+  const isLoggedIn = false;
   const modules = [
     { name: "SAP FICO", desc: "Finance & Controlling", color: "#2563EB", lessons: 8 },
     { name: "SAP MM", desc: "Materials Management", color: "#16A34A", lessons: 8 },
