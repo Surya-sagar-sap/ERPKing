@@ -124,7 +124,7 @@ export default function SapArchitectureFlow() {
   const edges = useMemo(() => initialEdges, []);
 
   return (
-    <div className="relative h-[500px] w-full" style={{ background: "#0f172a" }}>
+    <div className="relative h-[340px] md:h-[420px] lg:h-[480px] w-full" style={{ background: "#0f172a" }}>
       {/* Header */}
       <div className="absolute top-3 left-4 z-10 text-xs text-slate-400">
         SAP Ecosystem — Click any module to explore

@@ -6,7 +6,7 @@ import {
   Sparkles, Layers, GraduationCap, PlayCircle,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import SapArchitectureFlow from "@/components/SapArchitectureFlow";
+import SapArchitectureFlow from "@/components/SapArchitectureFlowClient";
 
 export default async function LandingPage() {
   const supabase = createClient();
@@ -165,8 +165,8 @@ export default async function LandingPage() {
             </div>
           </div>
 
-          {/* Right: live SAP architecture flowchart */}
-          <div className="relative">
+          {/* Right: live SAP architecture flowchart — desktop only */}
+          <div className="relative hidden lg:block">
             <div
               className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl"
               style={{ boxShadow: "0 30px 80px -20px rgba(0,0,0,0.45)" }}
