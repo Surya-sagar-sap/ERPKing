@@ -47,6 +47,7 @@ model User {
   // Relations
   progress       UserProgress[]
   badges         UserBadge[]
+  certificates   Certificate[]
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
@@ -69,7 +70,8 @@ model Module {
   // Status
   isPublished Boolean  @default(false)
   // Relations
-  lessons     Lesson[]
+  lessons      Lesson[]
+  certificates Certificate[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -246,4 +248,45 @@ model GlossaryTerm {
   updatedAt   DateTime @updatedAt
 
   @@map("glossary_terms")
+}
+
+// ─────────────────────────────────────────────
+// CERTIFICATES
+// ─────────────────────────────────────────────
+
+model Certificate {
+  id           String   @id @default(cuid())
+  userId       String
+  moduleId     String
+  credentialId String   @unique // e.g. "SAPKING-FICO-2025-A3F7X2"
+  issuedAt     DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  module Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, moduleId])
+  @@map("certificates")
+}
+
+// ─────────────────────────────────────────────
+// PRICING
+// ─────────────────────────────────────────────
+
+model PricingPlan {
+  id           String   @id @default(cuid())
+  name         String   // "Free", "Pro", "Business"
+  slug         String   @unique // "free", "pro", "business"
+  monthlyPrice Float    @default(0) // USD, 0 = free
+  yearlyPrice  Float    @default(0) // USD/year
+  description  String   // one-line tagline
+  features     Json     // string[] — bullet point list
+  highlighted  Boolean  @default(false) // shows "Most Popular" badge
+  ctaText      String   @default("Get started")
+  ctaUrl       String   @default("/register")
+  isActive     Boolean  @default(true)
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("pricing_plans")
 }

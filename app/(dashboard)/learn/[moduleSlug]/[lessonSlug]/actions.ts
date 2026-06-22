@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
+import { issueCertificateIfEligible } from "@/lib/certificates";
 
 export async function markLessonComplete(lessonId: string, xpReward: number, moduleSlug: string, lessonSlug: string) {
   const supabase = createClient();
@@ -60,6 +61,15 @@ export async function markLessonComplete(lessonId: string, xpReward: number, mod
           create: { userId: dbUser.id, badgeId: badge.id },
         });
       }
+    }
+
+    // Auto-issue a module certificate if this was the last lesson in the module.
+    const lesson = await prisma.lesson.findUnique({
+      where: { id: lessonId },
+      select: { moduleId: true },
+    });
+    if (lesson) {
+      await issueCertificateIfEligible(dbUser.id, lesson.moduleId);
     }
   }
 

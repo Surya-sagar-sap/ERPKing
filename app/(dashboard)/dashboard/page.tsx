@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import {
   BookOpen, Trophy, Flame, Star, ChevronRight,
-  Zap, Lock, CheckCircle2, Clock, ArrowRight, Sparkles,
+  Zap, Lock, CheckCircle2, Clock, ArrowRight, Sparkles, Award,
 } from "lucide-react";
 import AppNav from "@/components/AppNav";
 
@@ -25,7 +25,7 @@ export default async function DashboardPage() {
   }
 
   // Parallel data fetch
-  const [modules, userProgress, userBadges, allBadges, totalLessons] = await Promise.all([
+  const [modules, userProgress, userBadges, allBadges, totalLessons, certificates] = await Promise.all([
     prisma.module.findMany({
       where: { isPublished: true },
       orderBy: { order: "asc" },
@@ -49,6 +49,11 @@ export default async function DashboardPage() {
     }),
     prisma.badge.findMany({ orderBy: { xpReward: "asc" } }),
     prisma.lesson.count({ where: { isPublished: true } }),
+    prisma.certificate.findMany({
+      where: { userId: dbUser.id },
+      include: { module: { select: { title: true, slug: true, color: true, icon: true } } },
+      orderBy: { issuedAt: "desc" },
+    }),
   ]);
 
   const completedIds = new Set(userProgress.map((p) => p.lessonId));
@@ -332,6 +337,66 @@ export default async function DashboardPage() {
               );
             })}
           </div>
+        </div>
+
+        {/* ── My Certificates ── */}
+        <div>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-bold tracking-tight flex items-center gap-2">
+              <Award className="w-5 h-5 text-yellow-500" /> My Certificates
+            </h2>
+            {certificates.length > 0 && (
+              <span className="text-xs text-muted-foreground bg-muted px-2.5 py-1 rounded-full font-medium">
+                {certificates.length} earned
+              </span>
+            )}
+          </div>
+
+          {certificates.length === 0 ? (
+            <div className="rounded-2xl border border-dashed border-border bg-muted/20 p-8 text-center">
+              <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center mx-auto mb-3">
+                <Award className="w-6 h-6 text-muted-foreground" />
+              </div>
+              <div className="font-semibold">No certificates yet</div>
+              <p className="text-sm text-muted-foreground mt-1">
+                Complete all lessons in a module to earn your first certificate.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {certificates.map((cert) => (
+                <Link
+                  key={cert.id}
+                  href={`/certificate/${cert.credentialId}`}
+                  className="group relative rounded-2xl border border-border bg-card p-5 overflow-hidden transition-transform hover:-translate-y-1 flex flex-col gap-3"
+                >
+                  <div className="absolute left-0 top-0 bottom-0 w-1" style={{ backgroundColor: cert.module.color }} />
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="w-11 h-11 rounded-2xl flex items-center justify-center text-2xl shrink-0"
+                      style={{ backgroundColor: cert.module.color + "1f", border: `1.5px solid ${cert.module.color}40` }}
+                    >
+                      {cert.module.icon}
+                    </div>
+                    <div className="min-w-0">
+                      <div className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
+                        Certificate of Completion
+                      </div>
+                      <div className="font-semibold leading-tight truncate group-hover:text-primary transition-colors">
+                        {cert.module.title}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between text-xs text-muted-foreground">
+                    <span>Issued {new Date(cert.issuedAt).toLocaleDateString()}</span>
+                    <span className="inline-flex items-center gap-0.5 font-semibold text-primary group-hover:gap-1.5 transition-all">
+                      View <ArrowRight className="w-3.5 h-3.5" />
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
 
       </div>

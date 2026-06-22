@@ -77,6 +77,7 @@ export default async function LandingPage() {
             <a href="#features" className="px-4 py-1.5 text-sm text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors">Features</a>
             <a href="#modules" className="px-4 py-1.5 text-sm text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors">Modules</a>
             <a href="#method" className="px-4 py-1.5 text-sm text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors">How it works</a>
+            <Link href="/pricing" className="px-4 py-1.5 text-sm text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors">Pricing</Link>
           </div>
 
           <div className="ml-auto flex items-center gap-2">
@@ -340,7 +341,10 @@ export default async function LandingPage() {
             </div>
             <span className="font-medium text-foreground">SAPKing</span>
           </div>
-          <div>© {new Date().getFullYear()} SAPKing. Built for SAP learners.</div>
+          <div className="flex items-center gap-5">
+            <Link href="/pricing" className="hover:text-foreground transition-colors">Pricing</Link>
+            <span>© {new Date().getFullYear()} SAPKing. Built for SAP learners.</span>
+          </div>
         </div>
       </footer>
     </div>
