@@ -17,21 +17,24 @@ export default async function LearnPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const dbUser = await prisma.user.findUnique({ where: { email: user.email! } });
+  // dbUser and the module list are independent — fetch them in parallel.
+  const [dbUser, modules] = await Promise.all([
+    prisma.user.findUnique({ where: { email: user.email! } }),
+    prisma.module.findMany({
+      where: { isPublished: true },
+      orderBy: { order: "asc" },
+      include: {
+        lessons: {
+          where: { isPublished: true },
+          select: { id: true, estimatedMinutes: true },
+        },
+      },
+    }),
+  ]);
+
   if (!dbUser) redirect("/dashboard");
 
   const isAdmin = dbUser.role === "ADMIN";
-
-  const modules = await prisma.module.findMany({
-    where: { isPublished: true },
-    orderBy: { order: "asc" },
-    include: {
-      lessons: {
-        where: { isPublished: true },
-        select: { id: true, estimatedMinutes: true },
-      },
-    },
-  });
 
   // Get all progress for this user
   const progress = await prisma.userProgress.findMany({

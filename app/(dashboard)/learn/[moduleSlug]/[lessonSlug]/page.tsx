@@ -19,23 +19,25 @@ export default async function LessonPage({
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const dbUser = await prisma.user.findUnique({ where: { email: user.email! } });
+  // dbUser and the module don't depend on each other — fetch them in parallel.
+  const [dbUser, mod] = await Promise.all([
+    prisma.user.findUnique({ where: { email: user.email! } }),
+    prisma.module.findUnique({
+      where: { slug: params.moduleSlug },
+      include: {
+        lessons: {
+          where: { isPublished: true },
+          orderBy: { order: "asc" },
+          select: { id: true, slug: true, title: true, order: true },
+        },
+      },
+    }),
+  ]);
+
   if (!dbUser) redirect("/dashboard");
+  if (!mod || !mod.isPublished) notFound();
 
   const isAdmin = dbUser.role === "ADMIN";
-
-  const mod = await prisma.module.findUnique({
-    where: { slug: params.moduleSlug },
-    include: {
-      lessons: {
-        where: { isPublished: true },
-        orderBy: { order: "asc" },
-        select: { id: true, slug: true, title: true, order: true },
-      },
-    },
-  });
-
-  if (!mod || !mod.isPublished) notFound();
 
   const lesson = await prisma.lesson.findUnique({
     where: { moduleId_slug: { moduleId: mod.id, slug: params.lessonSlug } },

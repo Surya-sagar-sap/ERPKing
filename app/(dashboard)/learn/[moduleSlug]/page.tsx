@@ -12,34 +12,36 @@ export default async function ModulePage({ params }: { params: { moduleSlug: str
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const dbUser = await prisma.user.findUnique({ where: { email: user.email! } });
-  if (!dbUser) redirect("/dashboard");
-
-  const isAdmin = dbUser.role === "ADMIN";
-
-  const mod = await prisma.module.findUnique({
-    where: { slug: params.moduleSlug },
-    include: {
-      lessons: {
-        where: { isPublished: true },
-        orderBy: { order: "asc" },
-        select: {
-          id: true,
-          title: true,
-          slug: true,
-          order: true,
-          difficulty: true,
-          estimatedMinutes: true,
-          xpReward: true,
-          interviewImportance: true,
-          quiz: { select: { id: true } },
-          flowchart: { select: { id: true } },
+  // dbUser and the module are independent — fetch them in parallel.
+  const [dbUser, mod] = await Promise.all([
+    prisma.user.findUnique({ where: { email: user.email! } }),
+    prisma.module.findUnique({
+      where: { slug: params.moduleSlug },
+      include: {
+        lessons: {
+          where: { isPublished: true },
+          orderBy: { order: "asc" },
+          select: {
+            id: true,
+            title: true,
+            slug: true,
+            order: true,
+            difficulty: true,
+            estimatedMinutes: true,
+            xpReward: true,
+            interviewImportance: true,
+            quiz: { select: { id: true } },
+            flowchart: { select: { id: true } },
+          },
         },
       },
-    },
-  });
+    }),
+  ]);
 
+  if (!dbUser) redirect("/dashboard");
   if (!mod || !mod.isPublished) notFound();
+
+  const isAdmin = dbUser.role === "ADMIN";
 
   const progress = await prisma.userProgress.findMany({
     where: { userId: dbUser.id, completed: true },
