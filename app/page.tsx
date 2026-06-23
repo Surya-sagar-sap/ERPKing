@@ -10,9 +10,12 @@ import SapArchitectureFlow from "@/components/SapArchitectureFlowClient";
 
 export default async function LandingPage() {
   const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  // Logged-in users skip the marketing page and go straight to the app.
-  if (user) redirect("/dashboard");
+  // Public marketing page: read the session from the cookie locally instead of
+  // calling the auth server (no cross-region round trip). Anonymous visitors —
+  // the common case here — render instantly with zero network calls. Logged-in
+  // users are bounced to the app, where getUser() does the authoritative check.
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session) redirect("/dashboard");
   const isLoggedIn = false;
   const modules = [
     { name: "SAP FICO", desc: "Finance & Controlling", color: "#2563EB", lessons: 8 },
