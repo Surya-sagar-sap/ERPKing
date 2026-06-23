@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
 async function requireAdmin() {
@@ -40,6 +41,8 @@ export async function updateModule(id: string, formData: FormData) {
     data: { title, description, color, icon, order },
   });
   revalidatePath("/admin/modules");
+  revalidatePath("/dashboard");
+  redirect("/admin/modules");
 }
 
 export async function toggleModulePublished(id: string, current: boolean) {

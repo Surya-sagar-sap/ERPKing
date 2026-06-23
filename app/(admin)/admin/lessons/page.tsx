@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
-import { Eye, EyeOff, Pencil, Trash2, Plus, Clock, Zap } from "lucide-react";
+import { Eye, EyeOff, Pencil, Plus, Clock, Zap } from "lucide-react";
 import { toggleLessonPublished, deleteLesson, createLesson } from "./actions";
+import DeleteButton from "@/components/admin/DeleteButton";
 import Link from "next/link";
 
 const DIFFICULTY_COLORS = {
@@ -197,14 +198,10 @@ export default async function AdminLessonsPage({
                     >
                       <Pencil className="w-4 h-4" />
                     </Link>
-                    <form action={deleteLesson.bind(null, lesson.id)}>
-                      <button
-                        type="submit"
-                        className="p-1.5 rounded-lg hover:bg-red-50 hover:text-red-600 transition-colors text-muted-foreground dark:hover:bg-red-950"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </form>
+                    <DeleteButton
+                      action={deleteLesson.bind(null, lesson.id)}
+                      message={`Delete "${lesson.title}"? This cannot be undone.`}
+                    />
                   </div>
                 </td>
               </tr>

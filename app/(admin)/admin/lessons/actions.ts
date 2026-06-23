@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
 async function requireAdmin() {
@@ -36,6 +37,35 @@ export async function createLesson(formData: FormData) {
     },
   });
   revalidatePath("/admin/lessons");
+}
+
+export async function updateLesson(id: string, formData: FormData) {
+  await requireAdmin();
+  const moduleId = formData.get("moduleId") as string;
+  const title = formData.get("title") as string;
+  const slug = formData.get("slug") as string;
+  const story = formData.get("story") as string;
+  const content = formData.get("content") as string;
+  const keyConceptTitle = formData.get("keyConceptTitle") as string;
+  const keyConceptBody = formData.get("keyConceptBody") as string;
+  const order = parseInt(formData.get("order") as string) || 99;
+  const estimatedMinutes = parseInt(formData.get("estimatedMinutes") as string) || 10;
+  const difficulty = (formData.get("difficulty") as string) || "BEGINNER";
+  const xpReward = parseInt(formData.get("xpReward") as string) || 50;
+
+  await prisma.lesson.update({
+    where: { id },
+    data: {
+      moduleId, title, slug, story, content,
+      keyConceptTitle, keyConceptBody,
+      order, estimatedMinutes,
+      difficulty: difficulty as "BEGINNER" | "INTERMEDIATE" | "ADVANCED",
+      xpReward,
+    },
+  });
+  revalidatePath("/admin/lessons");
+  revalidatePath(`/learn`);
+  redirect("/admin/lessons");
 }
 
 export async function toggleLessonPublished(id: string, current: boolean) {

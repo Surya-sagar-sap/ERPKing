@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
-import { Eye, EyeOff, Pencil, Trash2, Plus } from "lucide-react";
+import { Eye, EyeOff, Pencil, Plus } from "lucide-react";
 import { toggleModulePublished, deleteModule, createModule } from "./actions";
+import DeleteButton from "@/components/admin/DeleteButton";
 import Link from "next/link";
 
 export default async function AdminModulesPage() {
@@ -16,10 +17,6 @@ export default async function AdminModulesPage() {
           <h1 className="text-2xl font-bold">Modules</h1>
           <p className="text-muted-foreground text-sm mt-1">{modules.length} modules total</p>
         </div>
-        <button
-          onClick={undefined}
-          className="hidden"
-        />
       </div>
 
       {/* Create Module Form */}
@@ -118,14 +115,10 @@ export default async function AdminModulesPage() {
                     >
                       <Pencil className="w-4 h-4" />
                     </Link>
-                    <form action={deleteModule.bind(null, mod.id)} onSubmit={() => confirm("Delete this module and all its lessons?")}>
-                      <button
-                        type="submit"
-                        className="p-1.5 rounded-lg hover:bg-red-50 hover:text-red-600 transition-colors text-muted-foreground dark:hover:bg-red-950"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </form>
+                    <DeleteButton
+                      action={deleteModule.bind(null, mod.id)}
+                      message={`Delete "${mod.title}" and all its lessons? This cannot be undone.`}
+                    />
                   </div>
                 </td>
               </tr>
