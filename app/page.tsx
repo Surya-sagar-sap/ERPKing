@@ -48,14 +48,14 @@ export default async function LandingPage() {
     {
       icon: <BarChart3 className="w-6 h-6" />,
       title: "Track Everything",
-      desc: "Dashboard shows exactly where you are across all 16 SAP modules.",
+      desc: "Dashboard shows exactly where you are across all 14 SAP modules.",
       accent: "#16A34A",
     },
   ];
 
   const stats = [
     { value: "12", label: "SAP Modules", icon: <Layers className="w-4 h-4" /> },
-    { value: "195+", label: "Lessons", icon: <BookOpen className="w-4 h-4" /> },
+    { value: "226+", label: "Lessons", icon: <BookOpen className="w-4 h-4" /> },
     { value: "585+", label: "Quiz Questions", icon: <GraduationCap className="w-4 h-4" /> },
     { value: "XP", label: "& Badges", icon: <Trophy className="w-4 h-4" /> },
   ];
@@ -132,7 +132,7 @@ export default async function LandingPage() {
           {/* Left: copy */}
           <div className="text-center lg:text-left">
             <div className="inline-flex items-center gap-2 bg-primary/10 text-primary border border-primary/20 px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-              <Sparkles className="w-3.5 h-3.5" /> 12 SAP modules · 195+ interactive lessons
+              <Sparkles className="w-3.5 h-3.5" /> 14 SAP modules · 226+ interactive lessons
             </div>
             <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-6 leading-[1.05]">
               Learn SAP the way it{" "}
@@ -267,7 +267,7 @@ export default async function LandingPage() {
         </div>
         <div className="text-center mt-10">
           <Link href="/learn" className="inline-flex items-center gap-1.5 text-primary hover:gap-2.5 transition-all text-sm font-semibold">
-            View all 16 modules <ArrowRight className="w-4 h-4" />
+            View all 14 modules <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
       </section>
