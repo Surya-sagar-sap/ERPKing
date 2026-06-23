@@ -2,13 +2,15 @@ import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { LayoutDashboard, BookOpen, FileText, HelpCircle, Users, DollarSign, LogOut } from "lucide-react";
+import { LayoutDashboard, BookOpen, FileText, HelpCircle, Award, BarChart3, Users, DollarSign, LogOut } from "lucide-react";
 
 const navItems = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard, exact: true },
   { href: "/admin/modules", label: "Modules", icon: BookOpen },
   { href: "/admin/lessons", label: "Lessons", icon: FileText },
   { href: "/admin/quizzes", label: "Quizzes", icon: HelpCircle },
+  { href: "/admin/certificates", label: "Certificates", icon: Award },
+  { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
   { href: "/admin/users", label: "Users", icon: Users },
   { href: "/admin/pricing", label: "Pricing", icon: DollarSign },
 ];

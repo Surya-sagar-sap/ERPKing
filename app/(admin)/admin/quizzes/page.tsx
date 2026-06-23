@@ -1,3 +1,4 @@
+// ─── FILE: app/(admin)/admin/quizzes/page.tsx ───
 import { prisma } from "@/lib/prisma";
 import { HelpCircle } from "lucide-react";
 import Link from "next/link";
@@ -26,6 +27,7 @@ export default async function AdminQuizzesPage() {
               <th className="text-left px-6 py-3 font-medium text-muted-foreground">Lesson</th>
               <th className="text-left px-6 py-3 font-medium text-muted-foreground">Module</th>
               <th className="text-left px-6 py-3 font-medium text-muted-foreground">Questions</th>
+              <th className="text-right px-6 py-3 font-medium text-muted-foreground">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -48,11 +50,16 @@ export default async function AdminQuizzesPage() {
                     {quiz._count.questions} questions
                   </span>
                 </td>
+                <td className="px-6 py-4 text-right">
+                  <Link href={`/admin/quizzes/${quiz.id}`} className="text-sm text-primary hover:underline font-medium">
+                    Edit →
+                  </Link>
+                </td>
               </tr>
             ))}
             {quizzes.length === 0 && (
               <tr>
-                <td colSpan={4} className="px-6 py-12 text-center text-muted-foreground">
+                <td colSpan={5} className="px-6 py-12 text-center text-muted-foreground">
                   Quizzes are created automatically when lessons are seeded.
                 </td>
               </tr>
@@ -60,10 +67,7 @@ export default async function AdminQuizzesPage() {
           </tbody>
         </table>
       </div>
-
-      <div className="mt-6 p-4 border rounded-xl bg-muted/30 text-sm text-muted-foreground">
-        💡 Quiz editing coming in Section 7 (Quiz System). For now, quizzes are managed via the seed file.
-      </div>
     </div>
   );
 }
+// ─── END FILE ───
