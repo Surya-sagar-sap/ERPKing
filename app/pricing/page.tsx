@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { createClient } from "@/lib/supabase/server";
 import { Sparkles } from "lucide-react";
 import PricingToggle from "@/components/PricingToggle";
 import { parseFeatures, type PlanView } from "@/lib/pricing";
@@ -35,6 +36,19 @@ export default async function PricingPage() {
     where: { isActive: true },
     orderBy: { order: "asc" },
   });
+
+  // Current user's plan (for "Your current plan" badge + manage link)
+  const supabase = createClient();
+  const { data: { user: authUser } } = await supabase.auth.getUser();
+  let currentPlan = "free";
+  if (authUser) {
+    const dbUser = await prisma.user.findUnique({
+      where: { email: authUser.email! },
+      select: { plan: true },
+    });
+    currentPlan = dbUser?.plan ?? "free";
+  }
+  const isLoggedIn = !!authUser;
 
   const plans: PlanView[] = dbPlans.map((p) => ({
     id: p.id,
@@ -95,7 +109,7 @@ export default async function PricingPage() {
         </div>
 
         {plans.length > 0 ? (
-          <PricingToggle plans={plans} />
+          <PricingToggle plans={plans} currentPlan={currentPlan} isLoggedIn={isLoggedIn} />
         ) : (
           <div className="text-center text-muted-foreground py-16">
             Pricing is being set up. Please check back soon.

@@ -82,12 +82,17 @@ export default function PricingPlanForm({ plan }: { plan: PlanView }) {
           <input className={input} value={description} onChange={(e) => setDescription(e.target.value)} />
         </div>
         <div>
-          <label className={label}>Monthly price (USD)</label>
+          <label className={label}>Monthly price (INR)</label>
           <input className={input} type="number" min="0" value={monthlyPrice} onChange={(e) => setMonthlyPrice(e.target.value)} />
         </div>
         <div>
-          <label className={label}>Yearly price (USD)</label>
+          <label className={label}>Yearly price (INR)</label>
           <input className={input} type="number" min="0" value={yearlyPrice} onChange={(e) => setYearlyPrice(e.target.value)} />
+        </div>
+        <div className="sm:col-span-2">
+          <p className="text-xs text-amber-600 dark:text-amber-400 bg-amber-500/10 rounded-lg px-3 py-2">
+            ⚡ Changing the price automatically creates a new Razorpay plan. Existing subscribers keep their current rate.
+          </p>
         </div>
         <div className="sm:col-span-2">
           <label className={label}>Features (one per line)</label>

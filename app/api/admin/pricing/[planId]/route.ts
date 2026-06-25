@@ -7,6 +7,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
+import { razorpay } from "@/lib/razorpay";
 import { revalidatePath } from "next/cache";
 
 async function requireAdmin() {
@@ -50,6 +51,52 @@ export async function PATCH(
 
   if (Object.keys(data).length === 0) {
     return NextResponse.json({ error: "No valid fields to update" }, { status: 400 });
+  }
+
+  // ── Razorpay auto-sync ──
+  // Razorpay plans are immutable, so when a price changes we create NEW plans and
+  // store their ids. Existing subscribers keep their original rate on the old plan.
+  // The Free plan (price 0) and contact-sales plans don't get Razorpay plans.
+  try {
+    const existing = await prisma.pricingPlan.findUnique({ where: { id: params.planId } });
+    if (!existing) {
+      return NextResponse.json({ error: "Plan not found" }, { status: 404 });
+    }
+
+    const planName = typeof data.name === "string" ? data.name : existing.name;
+    const newMonthly =
+      typeof data.monthlyPrice === "number" ? data.monthlyPrice : existing.monthlyPrice;
+    const newYearly =
+      typeof data.yearlyPrice === "number" ? data.yearlyPrice : existing.yearlyPrice;
+
+    const monthlyChanged = newMonthly !== existing.monthlyPrice;
+    const yearlyChanged = newYearly !== existing.yearlyPrice;
+
+    // Only call Razorpay when we have credentials AND the price actually changed.
+    const hasRzpKeys = !!process.env.RAZORPAY_KEY_ID && !!process.env.RAZORPAY_KEY_SECRET;
+
+    if (hasRzpKeys && newMonthly > 0 && (monthlyChanged || !existing.razorpayPlanIdMonthly)) {
+      const p = await razorpay.plans.create({
+        period: "monthly",
+        interval: 1,
+        item: { name: `SAPKing ${planName} Monthly`, amount: newMonthly * 100, currency: "INR" },
+      });
+      data.razorpayPlanIdMonthly = p.id;
+    }
+    if (hasRzpKeys && newYearly > 0 && (yearlyChanged || !existing.razorpayPlanIdYearly)) {
+      const p = await razorpay.plans.create({
+        period: "yearly",
+        interval: 1,
+        item: { name: `SAPKing ${planName} Yearly`, amount: newYearly * 100, currency: "INR" },
+      });
+      data.razorpayPlanIdYearly = p.id;
+    }
+  } catch (err) {
+    console.error("Razorpay plan auto-sync error:", err);
+    return NextResponse.json(
+      { error: "Saved nothing — could not create the new Razorpay plan. Check your API keys." },
+      { status: 502 }
+    );
   }
 
   try {

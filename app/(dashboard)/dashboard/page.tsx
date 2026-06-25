@@ -8,6 +8,7 @@ import {
   Zap, Lock, CheckCircle2, Clock, ArrowRight, Sparkles, Award,
 } from "lucide-react";
 import AppNav from "@/components/AppNav";
+import PaymentSuccessBanner from "@/components/PaymentSuccessBanner";
 
 const XP_PER_LEVEL = 500;
 
@@ -100,6 +101,9 @@ export default async function DashboardPage() {
 
       <div className="container mx-auto max-w-5xl py-8 px-4 space-y-8">
 
+        {/* ── Payment success banner (reads ?payment=success) ── */}
+        <PaymentSuccessBanner />
+
         {/* ── Hero: Welcome + Level ── */}
         <div
           className="relative rounded-3xl border border-border p-6 md:p-8 overflow-hidden"
@@ -175,6 +179,34 @@ export default async function DashboardPage() {
               <div className="relative text-xs text-muted-foreground mt-0.5">{stat.label}</div>
             </div>
           ))}
+        </div>
+
+        {/* ── Plan status card ── */}
+        <div className="rounded-xl border border-border bg-card p-4 flex items-center justify-between">
+          <div>
+            <div className="text-xs text-muted-foreground uppercase tracking-wide mb-1">Current Plan</div>
+            <div className="flex items-center gap-2">
+              <span className={`text-sm font-bold px-2 py-0.5 rounded-full ${
+                dbUser.plan === "pro" ? "bg-purple-500/20 text-purple-400" :
+                dbUser.plan === "business" ? "bg-amber-500/20 text-amber-400" :
+                "bg-muted text-muted-foreground"
+              }`}>
+                {dbUser.plan === "free" ? "Free" : dbUser.plan === "pro" ? "Pro ⭐" : "Business 🏢"}
+              </span>
+              {dbUser.plan === "free" && (
+                <span className="text-xs text-muted-foreground">Upgrade to unlock all 226+ lessons</span>
+              )}
+            </div>
+          </div>
+          {dbUser.plan === "free" ? (
+            <Link href="/pricing" className="text-sm px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-medium transition-colors">
+              Upgrade to Pro
+            </Link>
+          ) : (
+            <Link href="/dashboard/billing" className="text-sm px-3 py-1.5 rounded-lg border border-border hover:bg-muted text-muted-foreground transition-colors">
+              Manage subscription
+            </Link>
+          )}
         </div>
 
         {/* ── Continue Learning — dominant hero card ── */}

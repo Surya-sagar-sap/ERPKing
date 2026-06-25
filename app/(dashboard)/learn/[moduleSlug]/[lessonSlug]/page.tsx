@@ -8,6 +8,7 @@ import LessonContent from "@/components/lesson/LessonContent";
 import CompleteButton from "@/components/lesson/CompleteButton";
 import FlowchartViewer from "@/components/flowchart/FlowchartViewer";
 import AppNav from "@/components/AppNav";
+import LessonPaywall from "@/components/LessonPaywall";
 import type { Node, Edge } from "reactflow";
 
 export default async function LessonPage({
@@ -48,6 +49,34 @@ export default async function LessonPage({
   });
 
   if (!lesson || !lesson.isPublished) notFound();
+
+  // ── Content gating ──
+  // First lesson of every module is always free; everything else needs a paid plan.
+  const isFreeLesson = lesson.order === 1;
+  const hasAccess = isFreeLesson || dbUser.plan === "pro" || dbUser.plan === "business";
+
+  if (!hasAccess) {
+    return (
+      <div className="min-h-screen bg-background">
+        <AppNav
+          name={dbUser.name ?? "Learner"}
+          email={dbUser.email}
+          isAdmin={isAdmin}
+          showPills={false}
+          breadcrumbs={[
+            { label: "Modules", href: "/learn" },
+            { label: mod.title, href: `/learn/${mod.slug}` },
+            { label: lesson.title },
+          ]}
+        />
+        <LessonPaywall
+          lessonTitle={lesson.title}
+          moduleTitle={mod.title}
+          moduleColor={mod.color}
+        />
+      </div>
+    );
+  }
 
   // Progress — current lesson + all module lessons (for sidebar)
   const [progressRecord, moduleProgress] = await Promise.all([

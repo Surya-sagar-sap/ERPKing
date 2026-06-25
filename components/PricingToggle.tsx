@@ -3,12 +3,22 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Check, Sparkles } from "lucide-react";
+import { Check, Sparkles, BadgeCheck } from "lucide-react";
 import { type PlanView, yearlySavingsPct } from "@/lib/pricing";
+import RazorpayButton from "@/components/RazorpayButton";
 
-export default function PricingToggle({ plans }: { plans: PlanView[] }) {
+export default function PricingToggle({
+  plans,
+  currentPlan = "free",
+  isLoggedIn = false,
+}: {
+  plans: PlanView[];
+  currentPlan?: string;
+  isLoggedIn?: boolean;
+}) {
   const [billing, setBilling] = useState<"monthly" | "yearly">("monthly");
   const isYearly = billing === "yearly";
+  const hasPaidPlan = currentPlan === "pro" || currentPlan === "business";
 
   return (
     <div>
@@ -47,6 +57,9 @@ export default function PricingToggle({ plans }: { plans: PlanView[] }) {
           const price = free ? 0 : isYearly ? plan.yearlyPrice : plan.monthlyPrice;
           const unit = free ? "" : isYearly ? "/yr" : "/mo";
           const savings = yearlySavingsPct(plan.monthlyPrice, plan.yearlyPrice);
+          const isCurrent = isLoggedIn && plan.slug === currentPlan;
+          const isPaid = plan.slug === "pro" || plan.slug === "business";
+          const label = `${plan.name === "Pro" ? "Start Pro" : "Choose " + plan.name} — ₹${price}${unit}`;
 
           return (
             <div
@@ -67,7 +80,7 @@ export default function PricingToggle({ plans }: { plans: PlanView[] }) {
               <p className="text-sm text-muted-foreground min-h-[40px]">{plan.description}</p>
 
               <div className="mt-4 flex items-end gap-1">
-                <span className="text-4xl font-bold tracking-tight">${price}</span>
+                <span className="text-4xl font-bold tracking-tight">₹{price.toLocaleString("en-IN")}</span>
                 {unit && <span className="text-muted-foreground mb-1.5 text-sm">{unit}</span>}
               </div>
               <div className="h-5 mt-1">
@@ -78,16 +91,77 @@ export default function PricingToggle({ plans }: { plans: PlanView[] }) {
                 )}
               </div>
 
-              <Link
-                href={plan.ctaUrl}
-                className={`mt-5 w-full text-center rounded-xl px-4 py-2.5 text-sm font-semibold transition-all ${
-                  plan.highlighted
-                    ? "bg-primary text-primary-foreground hover:opacity-90"
-                    : "border border-border hover:bg-muted"
-                }`}
-              >
-                {plan.ctaText}
-              </Link>
+              {/* CTA region */}
+              <div className="mt-5">
+                {isCurrent ? (
+                  <div className="w-full text-center rounded-xl px-4 py-2.5 text-sm font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 inline-flex items-center justify-center gap-1.5">
+                    <BadgeCheck className="w-4 h-4" /> Your current plan
+                  </div>
+                ) : free ? (
+                  <Link
+                    href="/register"
+                    className="w-full text-center rounded-xl px-4 py-2.5 text-sm font-semibold transition-all border border-border hover:bg-muted inline-flex items-center justify-center"
+                  >
+                    {plan.ctaText}
+                  </Link>
+                ) : isPaid && plan.slug === "business" ? (
+                  // Business is contact-sales by default (no self-serve checkout)
+                  plan.ctaUrl && plan.ctaUrl.startsWith("/") && plan.ctaText.toLowerCase().includes("contact") ? (
+                    <Link
+                      href={plan.ctaUrl}
+                      className={`w-full text-center rounded-xl px-4 py-2.5 text-sm font-semibold transition-all inline-flex items-center justify-center ${
+                        plan.highlighted
+                          ? "bg-primary text-primary-foreground hover:opacity-90"
+                          : "border border-border hover:bg-muted"
+                      }`}
+                    >
+                      {plan.ctaText}
+                    </Link>
+                  ) : (
+                    <RazorpayButton
+                      planSlug="business"
+                      billing={billing}
+                      price={price}
+                      label={label}
+                      className={`w-full text-center rounded-xl px-4 py-2.5 text-sm font-semibold transition-all disabled:opacity-60 ${
+                        plan.highlighted
+                          ? "bg-primary text-primary-foreground hover:opacity-90"
+                          : "border border-border hover:bg-muted"
+                      }`}
+                    />
+                  )
+                ) : (
+                  <RazorpayButton
+                    planSlug="pro"
+                    billing={billing}
+                    price={price}
+                    label={label}
+                    className={`w-full text-center rounded-xl px-4 py-2.5 text-sm font-semibold transition-all disabled:opacity-60 ${
+                      plan.highlighted
+                        ? "bg-primary text-primary-foreground hover:opacity-90"
+                        : "border border-border hover:bg-muted"
+                    }`}
+                  />
+                )}
+
+                {/* Manage subscription link for paid users */}
+                {isLoggedIn && hasPaidPlan && isPaid && !isCurrent && (
+                  <Link
+                    href="/dashboard/billing"
+                    className="mt-2 block text-center text-xs text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    Manage subscription
+                  </Link>
+                )}
+                {isCurrent && isPaid && (
+                  <Link
+                    href="/dashboard/billing"
+                    className="mt-2 block text-center text-xs text-primary hover:underline"
+                  >
+                    Manage subscription
+                  </Link>
+                )}
+              </div>
 
               <ul className="mt-6 space-y-2.5">
                 {plan.features.map((feature, i) => (

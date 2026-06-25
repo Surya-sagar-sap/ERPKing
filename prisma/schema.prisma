@@ -44,6 +44,11 @@ model User {
   level          Int      @default(1)
   streak         Int      @default(0)
   lastActiveDate DateTime?
+  // Billing (Razorpay)
+  plan                   String    @default("free") // "free" | "pro" | "business"
+  razorpayCustomerId     String?
+  razorpaySubscriptionId String?
+  planExpiresAt          DateTime?
   // Relations
   progress       UserProgress[]
   badges         UserBadge[]
@@ -276,8 +281,8 @@ model PricingPlan {
   id           String   @id @default(cuid())
   name         String   // "Free", "Pro", "Business"
   slug         String   @unique // "free", "pro", "business"
-  monthlyPrice Float    @default(0) // USD, 0 = free
-  yearlyPrice  Float    @default(0) // USD/year
+  monthlyPrice Float    @default(0) // INR, 0 = free
+  yearlyPrice  Float    @default(0) // INR/year
   description  String   // one-line tagline
   features     Json     // string[] — bullet point list
   highlighted  Boolean  @default(false) // shows "Most Popular" badge
@@ -287,6 +292,9 @@ model PricingPlan {
   order        Int      @default(0)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  razorpayPlanIdMonthly  String?   // Razorpay Plan ID for monthly billing
+  razorpayPlanIdYearly   String?   // Razorpay Plan ID for yearly billing
+  currency               String    @default("INR")
 
   @@map("pricing_plans")
 }

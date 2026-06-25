@@ -136,7 +136,7 @@ async function main() {
       description:
         "The in-memory database and platform under modern SAP. Learn its architecture, data modeling, SQLScript, tools, and HANA Cloud.",
       color: "#0891B2",
-      icon: "⚡",
+      icon: "🗄️",
       order: 9,
       isPublished: true,
     },
