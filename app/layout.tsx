@@ -33,6 +33,20 @@ export const metadata: Metadata = {
     siteName: "Learn ERP",
     title: "Learn ERP - SAP Learning Platform",
     description: "The easiest way to learn SAP. Visual flowcharts, real business stories, and hands-on practice.",
+    images: [
+      {
+        url: `${SITE_URL}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: "Learn ERP - SAP Learning Platform",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Learn ERP - SAP Learning Platform",
+    description: "The easiest way to learn SAP. Visual flowcharts, real business stories, and hands-on practice.",
+    images: [`${SITE_URL}/og-image.png`],
   },
 };
 
