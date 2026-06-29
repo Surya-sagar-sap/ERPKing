@@ -79,7 +79,7 @@ export async function PATCH(
       const p = await razorpay.plans.create({
         period: "monthly",
         interval: 1,
-        item: { name: `SAPKing ${planName} Monthly`, amount: newMonthly * 100, currency: "INR" },
+        item: { name: `Learn ERP ${planName} Monthly`, amount: newMonthly * 100, currency: "INR" },
       });
       data.razorpayPlanIdMonthly = p.id;
     }
@@ -87,7 +87,7 @@ export async function PATCH(
       const p = await razorpay.plans.create({
         period: "yearly",
         interval: 1,
-        item: { name: `SAPKing ${planName} Yearly`, amount: newYearly * 100, currency: "INR" },
+        item: { name: `Learn ERP ${planName} Yearly`, amount: newYearly * 100, currency: "INR" },
       });
       data.razorpayPlanIdYearly = p.id;
     }

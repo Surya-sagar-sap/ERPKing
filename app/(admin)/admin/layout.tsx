@@ -33,7 +33,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             <span className="text-white font-bold text-xs">S</span>
           </div>
           <div>
-            <div className="font-bold text-sm leading-none">SAPKing</div>
+            <div className="font-bold text-sm leading-none">Learn ERP</div>
             <div className="text-[10px] text-muted-foreground mt-0.5">Admin Panel</div>
           </div>
         </div>

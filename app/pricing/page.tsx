@@ -8,7 +8,7 @@ import PricingToggle from "@/components/PricingToggle";
 import { parseFeatures, type PlanView } from "@/lib/pricing";
 
 export const metadata: Metadata = {
-  title: "Pricing — SAPKing",
+  title: "Pricing — Learn ERP",
   description: "Simple, transparent pricing for SAP learning. Free, Pro, and Business plans.",
 };
 
@@ -77,7 +77,7 @@ export default async function PricingPage() {
             >
               <span className="text-white font-bold text-sm">S</span>
             </div>
-            <span className="font-bold text-base">SAPKing</span>
+            <span className="font-bold text-base">Learn ERP</span>
           </Link>
           <div className="ml-auto flex items-center gap-2">
             <Link href="/login" className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted">

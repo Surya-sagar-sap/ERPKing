@@ -49,7 +49,7 @@ export default function AppNav({
           >
             <span className="text-white font-bold text-sm">S</span>
           </div>
-          <span className="font-bold text-base">SAPKing</span>
+          <span className="font-bold text-base">Learn ERP</span>
         </Link>
 
         {/* Center: breadcrumb trail OR tabs */}

@@ -9,7 +9,7 @@ export default function LoginPage({ searchParams }: { searchParams: { error?: st
             <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
               <span className="text-white font-bold">S</span>
             </div>
-            <span className="font-bold text-2xl">SAPKing</span>
+            <span className="font-bold text-2xl">Learn ERP</span>
           </Link>
           <h1 className="text-2xl font-bold mt-6 mb-1">Welcome back</h1>
           <p className="text-muted-foreground text-sm">Sign in to continue learning SAP</p>

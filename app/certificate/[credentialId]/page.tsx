@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { Award, ShieldCheck } from "lucide-react";
 import CertificateActions from "@/components/CertificateActions";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://sapking.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://learnerp.com";
 
 async function getCertificate(credentialId: string) {
   return prisma.certificate.findUnique({
@@ -23,10 +23,10 @@ export async function generateMetadata({
   params: { credentialId: string };
 }): Promise<Metadata> {
   const cert = await getCertificate(params.credentialId);
-  if (!cert) return { title: "Certificate not found — SAPKing" };
+  if (!cert) return { title: "Certificate not found — Learn ERP" };
   return {
-    title: `${cert.module.title} Certificate — ${cert.user.name ?? "SAPKing Learner"}`,
-    description: `Verified SAPKing certificate of completion for ${cert.module.title}. Credential ${cert.credentialId}.`,
+    title: `${cert.module.title} Certificate — ${cert.user.name ?? "Learn ERP Learner"}`,
+    description: `Verified Learn ERP certificate of completion for ${cert.module.title}. Credential ${cert.credentialId}.`,
   };
 }
 
@@ -53,14 +53,14 @@ export default async function CertificatePage({
             href="/"
             className="inline-block mt-6 text-sm font-semibold text-primary hover:underline"
           >
-            ← Back to SAPKing
+            ← Back to Learn ERP
           </Link>
         </div>
       </div>
     );
   }
 
-  const recipient = cert.user.name ?? "SAPKing Learner";
+  const recipient = cert.user.name ?? "Learn ERP Learner";
   const accent = cert.module.color || "#7C3AED";
   const issued = new Date(cert.issuedAt);
   const issuedLabel = issued.toLocaleDateString("en-US", {
@@ -120,7 +120,7 @@ export default async function CertificatePage({
             >
               <span className="text-white font-bold text-sm">S</span>
             </div>
-            <span className="font-bold text-lg tracking-tight">SAPKing</span>
+            <span className="font-bold text-lg tracking-tight">Learn ERP</span>
           </div>
 
           <div className="inline-flex items-center gap-2 text-[#E8C66B] text-xs font-semibold uppercase tracking-[0.2em] mb-6">

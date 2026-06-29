@@ -9,7 +9,7 @@ export default function RegisterPage({ searchParams }: { searchParams: { error?:
             <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
               <span className="text-white font-bold">S</span>
             </div>
-            <span className="font-bold text-2xl">SAPKing</span>
+            <span className="font-bold text-2xl">Learn ERP</span>
           </Link>
           <h1 className="text-2xl font-bold mt-6 mb-1">Start learning SAP</h1>
           <p className="text-muted-foreground text-sm">Free forever. No credit card needed.</p>

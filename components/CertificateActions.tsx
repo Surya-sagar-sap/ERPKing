@@ -25,8 +25,8 @@ export default function CertificateActions({
     "https://www.linkedin.com/profile/add?" +
     new URLSearchParams({
       startTask: "CERTIFICATION_NAME",
-      name: `${moduleTitle} — SAPKing Certificate`,
-      organizationName: "SAPKing",
+      name: `${moduleTitle} — Learn ERP Certificate`,
+      organizationName: "Learn ERP",
       issueYear: String(issueYear),
       issueMonth: String(issueMonth),
       certUrl,

@@ -73,7 +73,7 @@ export default async function LandingPage() {
             >
               <span className="text-white font-bold text-sm">S</span>
             </div>
-            <span className="font-bold text-base">SAPKing</span>
+            <span className="font-bold text-base">Learn ERP</span>
           </Link>
 
           <div className="hidden md:flex items-center gap-0.5 ml-8">
@@ -206,7 +206,7 @@ export default async function LandingPage() {
       {/* ── FEATURES ── */}
       <section id="features" className="container mx-auto px-6 py-20">
         <div className="text-center mb-14">
-          <div className="inline-flex items-center gap-2 text-primary text-sm font-medium mb-3"><Sparkles className="w-4 h-4" /> Why SAPKing</div>
+          <div className="inline-flex items-center gap-2 text-primary text-sm font-medium mb-3"><Sparkles className="w-4 h-4" /> Why Learn ERP</div>
           <h2 className="text-3xl md:text-4xl font-bold mb-3 tracking-tight">Everything you need to learn SAP</h2>
           <p className="text-muted-foreground text-lg">Built for beginners. Trusted by professionals.</p>
         </div>
@@ -284,7 +284,7 @@ export default async function LandingPage() {
             style={{ background: "radial-gradient(circle, hsl(var(--primary)), transparent 60%)" }}
           />
           <div className="relative text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-3 tracking-tight">The SAPKing Method</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-3 tracking-tight">The Learn ERP Method</h2>
             <p className="text-muted-foreground text-lg">Every lesson follows the same 5-step formula.</p>
           </div>
           <div className="relative grid grid-cols-1 md:grid-cols-5 gap-6">
@@ -342,11 +342,11 @@ export default async function LandingPage() {
             <div className="w-6 h-6 rounded flex items-center justify-center" style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)" }}>
               <span className="text-white font-bold text-xs">S</span>
             </div>
-            <span className="font-medium text-foreground">SAPKing</span>
+            <span className="font-medium text-foreground">Learn ERP</span>
           </div>
           <div className="flex items-center gap-5">
             <Link href="/pricing" className="hover:text-foreground transition-colors">Pricing</Link>
-            <span>© {new Date().getFullYear()} SAPKing. Built for SAP learners.</span>
+            <span>© {new Date().getFullYear()} Learn ERP. Built for SAP learners.</span>
           </div>
         </div>
       </footer>

@@ -25,7 +25,7 @@ export async function GET(
   return NextResponse.json({
     credentialId: certificate.credentialId,
     issuedAt: certificate.issuedAt,
-    recipientName: certificate.user.name ?? "SAPKing Learner",
+    recipientName: certificate.user.name ?? "Learn ERP Learner",
     module: certificate.module,
   });
 }

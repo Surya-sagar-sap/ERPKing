@@ -45,7 +45,7 @@ export default function RazorpayButton({ planSlug, billing, label, className }: 
       const rzp = new window.Razorpay({
         key: keyId,
         subscription_id: subscriptionId,
-        name: "SAPKing",
+        name: "Learn ERP",
         description: `${planSlug === "pro" ? "Pro" : "Business"} Plan — ${billing}`,
         image: "/logo.png",
         prefill: { name, email },

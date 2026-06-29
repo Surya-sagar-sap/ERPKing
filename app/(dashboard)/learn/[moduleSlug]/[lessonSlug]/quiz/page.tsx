@@ -58,7 +58,7 @@ export default async function QuizPage({
           <div className="w-6 h-6 bg-primary rounded flex items-center justify-center">
             <span className="text-white font-bold text-[10px]">S</span>
           </div>
-          SAPKing
+          Learn ERP
         </Link>
         <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />
         <Link href="/learn" className="text-muted-foreground hover:text-foreground">Modules</Link>
