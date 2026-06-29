@@ -15,13 +15,13 @@ export const viewport: Viewport = {
   ],
 };
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://erp-king.vercel.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://learnerp.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "SAPKing — Learn SAP From Zero",
-    template: "%s | SAPKing",
+    default: "Learn ERP - SAP Learning Platform",
+    template: "%s | Learn ERP",
   },
   description:
     "The easiest way to learn SAP. Visual flowcharts, real business stories, and hands-on practice. No prior experience needed.",
@@ -30,8 +30,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: SITE_URL,
-    siteName: "SAPKing",
-    title: "SAPKing — Learn SAP From Zero",
+    siteName: "Learn ERP",
+    title: "Learn ERP - SAP Learning Platform",
     description: "The easiest way to learn SAP. Visual flowcharts, real business stories, and hands-on practice.",
   },
 };
