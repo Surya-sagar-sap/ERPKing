@@ -56,7 +56,7 @@ export default function LessonPaywall({
           className="relative w-full inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold text-white transition-transform hover:scale-[1.02]"
           style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)" }}
         >
-          Upgrade to Pro — ₹999/mo <ArrowRight className="w-4 h-4" />
+          Upgrade to Pro — ₹399/mo <ArrowRight className="w-4 h-4" />
         </Link>
 
         {/* Secondary link */}

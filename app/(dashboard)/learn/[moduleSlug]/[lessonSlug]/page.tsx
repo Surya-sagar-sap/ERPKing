@@ -51,8 +51,8 @@ export default async function LessonPage({
   if (!lesson || !lesson.isPublished) notFound();
 
   // ── Content gating ──
-  // First lesson of every module is always free; everything else needs a paid plan.
-  const isFreeLesson = lesson.order === 1;
+  // First 5 lessons of every module are free; everything else needs a paid plan.
+  const isFreeLesson = lesson.order <= 5;
   const hasAccess = isFreeLesson || isAdmin || dbUser.plan === "pro" || dbUser.plan === "business";
 
   if (!hasAccess) {
