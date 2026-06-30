@@ -8,8 +8,18 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { razorpay } from "@/lib/razorpay";
+import { paymentRatelimit, limitOrPass, clientIp } from "@/lib/ratelimit";
 
 export async function POST(request: NextRequest) {
+  // Throttle checkout-start requests (no-op unless Upstash is configured).
+  const rl = await limitOrPass(paymentRatelimit, clientIp(request));
+  if (!rl.success) {
+    return NextResponse.json(
+      { error: "Too many requests. Please wait a moment and try again." },
+      { status: 429 }
+    );
+  }
+
   // 1. Auth
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();

@@ -344,6 +344,7 @@ export default async function LandingPage() {
             <Link href="/privacy" className="hover:text-foreground transition-colors">Privacy</Link>
             <Link href="/terms" className="hover:text-foreground transition-colors">Terms</Link>
             <Link href="/refund" className="hover:text-foreground transition-colors">Refund</Link>
+            <Link href="/contact" className="hover:text-foreground transition-colors">Contact</Link>
             <span className="w-full sm:w-auto">© {new Date().getFullYear()} Learn ERP. Built for SAP learners.</span>
           </div>
         </div>

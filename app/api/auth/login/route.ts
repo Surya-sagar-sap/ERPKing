@@ -1,7 +1,16 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextRequest, NextResponse } from "next/server";
+import { authRatelimit, limitOrPass, clientIp } from "@/lib/ratelimit";
 
 export async function POST(request: NextRequest) {
+  // Throttle login attempts per IP (no-op unless Upstash is configured).
+  const { success } = await limitOrPass(authRatelimit, clientIp(request));
+  if (!success) {
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set("error", "Too many attempts. Please wait a minute and try again.");
+    return NextResponse.redirect(loginUrl, { status: 303 });
+  }
+
   const formData = await request.formData();
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;

@@ -66,7 +66,14 @@ export async function POST(request: Request) {
       }
     }
 
-    if (eventType === "subscription.cancelled" || eventType === "subscription.completed") {
+    // Subscription ended for any reason: user cancelled, plan completed its cycles,
+    // OR a renewal payment ultimately failed (`halted` after Razorpay's retries).
+    // In every case the user loses paid access.
+    if (
+      eventType === "subscription.cancelled" ||
+      eventType === "subscription.completed" ||
+      eventType === "subscription.halted"
+    ) {
       const subscriptionId = payload.subscription.entity.id;
       await prisma.user.updateMany({
         where: { razorpaySubscriptionId: subscriptionId },
