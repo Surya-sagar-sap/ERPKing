@@ -114,12 +114,8 @@ export default async function CertificatePage({
         <div className="relative">
           {/* Brand */}
           <div className="flex items-center justify-center gap-2 mb-8">
-            <div
-              className="w-9 h-9 rounded-lg flex items-center justify-center"
-              style={{ background: "linear-gradient(135deg, hsl(221 83% 53%), #7C3AED)" }}
-            >
-              <span className="text-white font-bold text-sm">S</span>
-            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo-icon.svg" alt="Learn ERP" width={36} height={36} className="w-9 h-9 rounded-lg" />
             <span className="font-bold text-lg tracking-tight">Learn ERP</span>
           </div>
 

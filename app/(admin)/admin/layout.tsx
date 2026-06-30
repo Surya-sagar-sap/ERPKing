@@ -26,45 +26,46 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   return (
     <div className="min-h-screen flex bg-background">
       {/* Sidebar */}
-      <aside className="w-56 shrink-0 border-r bg-card flex flex-col">
+      <aside className="w-16 md:w-56 shrink-0 border-r bg-card flex flex-col">
         {/* Logo */}
-        <div className="px-5 py-4 border-b flex items-center gap-2">
-          <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-xs">S</span>
-          </div>
-          <div>
+        <div className="px-3 md:px-5 py-4 border-b flex items-center justify-center md:justify-start gap-2">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo-icon.svg" alt="Learn ERP" width={28} height={28} className="w-7 h-7 rounded-lg shrink-0" />
+          <div className="hidden md:block">
             <div className="font-bold text-sm leading-none">Learn ERP</div>
             <div className="text-[10px] text-muted-foreground mt-0.5">Admin Panel</div>
           </div>
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 px-3 py-4 space-y-1">
+        <nav className="flex-1 px-2 md:px-3 py-4 space-y-1">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+              title={item.label}
+              className="flex items-center justify-center md:justify-start gap-2.5 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
             >
               <item.icon className="w-4 h-4 shrink-0" />
-              {item.label}
+              <span className="hidden md:inline">{item.label}</span>
             </Link>
           ))}
         </nav>
 
         {/* Bottom */}
-        <div className="px-3 pb-4 space-y-1 border-t pt-3">
+        <div className="px-2 md:px-3 pb-4 space-y-1 border-t pt-3">
           <Link
             href="/dashboard"
-            className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+            title="Back to App"
+            className="flex items-center justify-center md:justify-start gap-2.5 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
           >
-            <BookOpen className="w-4 h-4" />
-            Back to App
+            <BookOpen className="w-4 h-4 shrink-0" />
+            <span className="hidden md:inline">Back to App</span>
           </Link>
           <form action="/api/auth/logout" method="POST">
-            <button className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
-              <LogOut className="w-4 h-4" />
-              Sign out
+            <button title="Sign out" className="w-full flex items-center justify-center md:justify-start gap-2.5 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
+              <LogOut className="w-4 h-4 shrink-0" />
+              <span className="hidden md:inline">Sign out</span>
             </button>
           </form>
         </div>

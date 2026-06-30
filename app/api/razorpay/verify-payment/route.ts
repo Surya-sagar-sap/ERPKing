@@ -52,9 +52,11 @@ export async function POST(request: NextRequest) {
 
   // 5. Fetch subscription to learn which plan was bought
   let planSlug: string;
+  let customerId: string | undefined;
   try {
     const subscription = await razorpay.subscriptions.fetch(razorpay_subscription_id);
     const planId = subscription.plan_id;
+    customerId = (subscription as { customer_id?: string }).customer_id;
     const matched = await prisma.pricingPlan.findFirst({
       where: {
         OR: [
@@ -78,6 +80,7 @@ export async function POST(request: NextRequest) {
     data: {
       plan: planSlug,
       razorpaySubscriptionId: razorpay_subscription_id,
+      ...(customerId ? { razorpayCustomerId: customerId } : {}),
       planExpiresAt: null, // active subscription, no expiry
     },
   });

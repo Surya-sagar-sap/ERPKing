@@ -26,6 +26,14 @@ export const metadata: Metadata = {
   description:
     "The easiest way to learn SAP. Visual flowcharts, real business stories, and hands-on practice. No prior experience needed.",
   keywords: ["SAP learning", "SAP tutorial", "SAP FICO", "SAP MM", "SAP SD", "SAP beginner", "ERP training"],
+  icons: {
+    icon: [
+      { url: "/favicon.png", type: "image/png" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
   openGraph: {
     type: "website",
     locale: "en_US",

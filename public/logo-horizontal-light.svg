@@ -1,0 +1,20 @@
+<svg width="820" height="220" viewBox="0 0 820 220" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="tileH1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3B82F6"/>
+      <stop offset="1" stop-color="#1D4ED8"/>
+    </linearGradient>
+  </defs>
+  <!-- icon -->
+  <g transform="translate(10,10) scale(0.39)">
+    <rect x="16" y="16" width="480" height="480" rx="116" fill="url(#tileH1)"/>
+    <g stroke-linejoin="round">
+      <path d="M256 150 L362 211 L256 272 L150 211 Z" fill="#ffffff" fill-opacity="0.96" stroke="#ffffff" stroke-opacity="0.96" stroke-width="6"/>
+      <path d="M150 211 L256 272 L256 388 L150 327 Z" fill="#ffffff" fill-opacity="0.60" stroke="#ffffff" stroke-opacity="0.60" stroke-width="6"/>
+      <path d="M362 211 L256 272 L256 388 L362 327 Z" fill="#ffffff" fill-opacity="0.38" stroke="#ffffff" stroke-opacity="0.38" stroke-width="6"/>
+    </g>
+    <path d="M214 120 L256 96 L298 120" fill="none" stroke="#ffffff" stroke-opacity="0.9" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <!-- wordmark (for light backgrounds) -->
+  <text x="232" y="143" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="104" font-weight="800" letter-spacing="-3" fill="#0F172A">Learn<tspan fill="#2563EB" dx="30">ERP</tspan></text>
+</svg>

@@ -182,10 +182,10 @@ export default async function DashboardPage() {
         </div>
 
         {/* ── Plan status card ── */}
-        <div className="rounded-xl border border-border bg-card p-4 flex items-center justify-between">
+        <div className="rounded-xl border border-border bg-card p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
             <div className="text-xs text-muted-foreground uppercase tracking-wide mb-1">Current Plan</div>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <span className={`text-sm font-bold px-2 py-0.5 rounded-full ${
                 dbUser.plan === "pro" ? "bg-purple-500/20 text-purple-400" :
                 dbUser.plan === "business" ? "bg-amber-500/20 text-amber-400" :
@@ -199,11 +199,11 @@ export default async function DashboardPage() {
             </div>
           </div>
           {dbUser.plan === "free" ? (
-            <Link href="/pricing" className="text-sm px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-medium transition-colors">
+            <Link href="/pricing" className="text-sm px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-medium transition-colors text-center shrink-0">
               Upgrade to Pro
             </Link>
           ) : (
-            <Link href="/dashboard/billing" className="text-sm px-3 py-1.5 rounded-lg border border-border hover:bg-muted text-muted-foreground transition-colors">
+            <Link href="/dashboard/billing" className="text-sm px-3 py-1.5 rounded-lg border border-border hover:bg-muted text-muted-foreground transition-colors text-center shrink-0">
               Manage subscription
             </Link>
           )}

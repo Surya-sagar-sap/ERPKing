@@ -15,10 +15,11 @@ async function createRazorpayPlan(amount: number, period: "monthly" | "yearly", 
       period: period === "monthly" ? "monthly" : "yearly",
       interval: 1,
       item: {
-        name: `SAPKing ${planName} ${period}`,
+        // Razorpay plan names must be alphanumeric + spaces (no dashes/em-dashes).
+        name: `Learn ERP ${planName} ${period}`,
         amount: amount * 100, // paise
         currency: "INR",
-        description: `SAPKing ${planName} plan billed ${period}`,
+        description: `Learn ERP ${planName} plan billed ${period}`,
       },
     });
     console.log(`✅ Created Razorpay plan: ${plan.id}`);
@@ -71,9 +72,14 @@ async function main() {
     },
   });
 
-  // Pro plan — create Razorpay plans
-  const proMonthlyPlanId = await createRazorpayPlan(399, "monthly", "Pro");
-  const proYearlyPlanId = await createRazorpayPlan(2999, "yearly", "Pro");
+  // Pro plan — reuse existing Razorpay plan ids if already set (idempotent re-runs;
+  // avoids creating duplicate/orphan Razorpay plans every time the seed is run).
+  const existingPro = await prisma.pricingPlan.findUnique({ where: { slug: "pro" } });
+  const proMonthlyPlanId =
+    existingPro?.razorpayPlanIdMonthly ?? (await createRazorpayPlan(399, "monthly", "Pro"));
+  const proYearlyPlanId =
+    existingPro?.razorpayPlanIdYearly ?? (await createRazorpayPlan(2999, "yearly", "Pro"));
+  if (existingPro?.razorpayPlanIdMonthly) console.log(`↺ Reusing Pro plan ids (already set)`);
 
   await prisma.pricingPlan.upsert({
     where: { slug: "pro" },
@@ -126,9 +132,13 @@ async function main() {
     },
   });
 
-  // Business plan
-  const bizMonthlyPlanId = await createRazorpayPlan(1499, "monthly", "Business");
-  const bizYearlyPlanId = await createRazorpayPlan(11999, "yearly", "Business");
+  // Business plan — reuse existing Razorpay plan ids if already set (idempotent).
+  const existingBiz = await prisma.pricingPlan.findUnique({ where: { slug: "business" } });
+  const bizMonthlyPlanId =
+    existingBiz?.razorpayPlanIdMonthly ?? (await createRazorpayPlan(1499, "monthly", "Business"));
+  const bizYearlyPlanId =
+    existingBiz?.razorpayPlanIdYearly ?? (await createRazorpayPlan(11999, "yearly", "Business"));
+  if (existingBiz?.razorpayPlanIdMonthly) console.log(`↺ Reusing Business plan ids (already set)`);
 
   await prisma.pricingPlan.upsert({
     where: { slug: "business" },

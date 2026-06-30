@@ -52,6 +52,16 @@
 @layer base {
   * { @apply border-border; }
   body { @apply bg-background text-foreground; }
+
+  /* Prevent horizontal scroll on mobile from decorative/blurred orbs and wide
+     elements. `clip` (not `hidden`) avoids creating a scroll container, so it
+     does NOT break the sticky navbars. */
+  html, body {
+    overflow-x: clip;
+    max-width: 100%;
+  }
+  /* Media never forces the viewport wider than the screen. */
+  img, svg, video, canvas { max-width: 100%; }
 }
 
 /* React Flow overrides */

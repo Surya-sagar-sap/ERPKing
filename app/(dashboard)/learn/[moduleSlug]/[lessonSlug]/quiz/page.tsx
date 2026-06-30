@@ -55,9 +55,8 @@ export default async function QuizPage({
       {/* Navbar */}
       <nav className="border-b px-6 py-3 flex items-center gap-2 bg-card sticky top-0 z-10 text-sm">
         <Link href="/dashboard" className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors">
-          <div className="w-6 h-6 bg-primary rounded flex items-center justify-center">
-            <span className="text-white font-bold text-[10px]">S</span>
-          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo-icon.svg" alt="Learn ERP" width={24} height={24} className="w-6 h-6 rounded" />
           Learn ERP
         </Link>
         <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />

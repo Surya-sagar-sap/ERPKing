@@ -6,9 +6,8 @@ export default function LoginPage({ searchParams }: { searchParams: { error?: st
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2">
-            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
-              <span className="text-white font-bold">S</span>
-            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo-icon.svg" alt="Learn ERP" width={40} height={40} className="w-10 h-10 rounded-xl" />
             <span className="font-bold text-2xl">Learn ERP</span>
           </Link>
           <h1 className="text-2xl font-bold mt-6 mb-1">Welcome back</h1>

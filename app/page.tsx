@@ -67,12 +67,8 @@ export default async function LandingPage() {
       <nav className="border-b border-border/60 sticky top-0 bg-background/80 backdrop-blur-xl z-50 h-14 w-full">
         <div className="max-w-7xl mx-auto px-6 w-full flex items-center h-full">
           <Link href="/" className="flex items-center gap-2 shrink-0">
-            <div
-              className="w-8 h-8 rounded-lg flex items-center justify-center"
-              style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)" }}
-            >
-              <span className="text-white font-bold text-sm">S</span>
-            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo-icon.svg" alt="Learn ERP" width={32} height={32} className="w-8 h-8 rounded-lg" />
             <span className="font-bold text-base">Learn ERP</span>
           </Link>
 
@@ -134,7 +130,7 @@ export default async function LandingPage() {
             <div className="inline-flex items-center gap-2 bg-primary/10 text-primary border border-primary/20 px-4 py-1.5 rounded-full text-sm font-medium mb-6">
               <Sparkles className="w-3.5 h-3.5" /> 14 SAP modules · 226+ interactive lessons
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-6 leading-[1.05]">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-6 leading-[1.05]">
               Learn SAP the way it{" "}
               <span className="bg-gradient-to-r from-primary via-primary to-[#7C3AED] bg-clip-text text-transparent">
                 actually makes sense
@@ -337,18 +333,18 @@ export default async function LandingPage() {
 
       {/* ── FOOTER ── */}
       <footer className="border-t border-border/60 py-8">
-        <div className="container mx-auto px-6 flex items-center justify-between text-sm text-muted-foreground">
+        <div className="container mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground text-center sm:text-left">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded flex items-center justify-center" style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)" }}>
-              <span className="text-white font-bold text-xs">S</span>
-            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo-icon.svg" alt="Learn ERP" width={24} height={24} className="w-6 h-6 rounded" />
             <span className="font-medium text-foreground">Learn ERP</span>
           </div>
-          <div className="flex items-center gap-5">
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
             <Link href="/pricing" className="hover:text-foreground transition-colors">Pricing</Link>
             <Link href="/privacy" className="hover:text-foreground transition-colors">Privacy</Link>
             <Link href="/terms" className="hover:text-foreground transition-colors">Terms</Link>
-            <span>© {new Date().getFullYear()} Learn ERP. Built for SAP learners.</span>
+            <Link href="/refund" className="hover:text-foreground transition-colors">Refund</Link>
+            <span className="w-full sm:w-auto">© {new Date().getFullYear()} Learn ERP. Built for SAP learners.</span>
           </div>
         </div>
       </footer>

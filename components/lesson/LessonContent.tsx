@@ -21,7 +21,23 @@ export default function LessonContent({ content }: { content: string }) {
       prose-blockquote:border-l-4 prose-blockquote:border-primary/40 prose-blockquote:bg-muted/30 prose-blockquote:rounded-r-lg prose-blockquote:py-1
       prose-a:text-primary prose-a:no-underline hover:prose-a:underline
     ">
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        components={{
+          // Wide tables (common in SAP content) shouldn't push the whole page
+          // sideways on mobile — let them scroll horizontally on their own.
+          table(props) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const { node, ...rest } = props as any;
+            void node;
+            return (
+              <div className="overflow-x-auto -mx-1 my-4">
+                <table {...rest} />
+              </div>
+            );
+          },
+        }}
+      >
         {content}
       </ReactMarkdown>
     </div>

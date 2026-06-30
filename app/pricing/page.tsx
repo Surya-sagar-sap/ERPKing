@@ -71,12 +71,8 @@ export default async function PricingPage() {
       <nav className="border-b border-border/60 sticky top-0 bg-background/80 backdrop-blur-xl z-50 h-14 w-full">
         <div className="max-w-7xl mx-auto px-6 h-full flex items-center">
           <Link href="/" className="flex items-center gap-2 shrink-0">
-            <div
-              className="w-8 h-8 rounded-lg flex items-center justify-center"
-              style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)" }}
-            >
-              <span className="text-white font-bold text-sm">S</span>
-            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo-icon.svg" alt="Learn ERP" width={32} height={32} className="w-8 h-8 rounded-lg" />
             <span className="font-bold text-base">Learn ERP</span>
           </Link>
           <div className="ml-auto flex items-center gap-2">
