@@ -32,58 +32,51 @@ export default function RefundPage() {
           <section>
             <h2 className="text-xl font-semibold text-foreground mb-3">1. Overview</h2>
             <p>
-              Learn ERP ("we", "us", "our") offers subscription plans for access to our SAP learning
+              Learn ERP ("we", "us", "our") sells one-time, lifetime access to SAP learning
               content at{" "}
               <a href="https://learnerp.app" className="text-primary hover:underline">learnerp.app</a>.
-              This policy explains how cancellations and refunds work for those subscriptions.
+              This policy explains our cancellation and refund terms for those purchases.
             </p>
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-foreground mb-3">2. Subscriptions &amp; Billing</h2>
+            <h2 className="text-xl font-semibold text-foreground mb-3">2. One-Time, Lifetime Purchases</h2>
             <p>
-              Paid plans (Pro and Business) are billed in advance on a recurring basis — either monthly
-              or yearly, depending on the plan you choose. Your subscription renews automatically at the
-              end of each billing period unless you cancel before the renewal date.
+              Learn ERP does <strong className="text-foreground">not</strong> use subscriptions. Every purchase is a
+              <strong className="text-foreground"> one-time payment</strong> that grants
+              <strong className="text-foreground"> lifetime access</strong> to the module(s) you buy — a single module
+              (₹199), any two modules (₹299), or all modules including future ones (₹599). There are no recurring
+              charges and nothing to cancel.
             </p>
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-foreground mb-3">3. Cancellation</h2>
+            <h2 className="text-xl font-semibold text-foreground mb-3">3. No Refunds</h2>
             <p>
-              You can cancel your subscription at any time from your{" "}
-              <a href="/dashboard/billing" className="text-primary hover:underline">billing page</a>.
-              When you cancel:
+              Because access is granted <strong className="text-foreground">instantly</strong> upon payment and the
+              content is digital and consumed on demand, <strong className="text-foreground">all sales are final</strong>.
+              Once a module or bundle is unlocked on your account, the purchase is
+              <strong className="text-foreground"> non-refundable</strong>. We encourage you to use the free preview
+              (the first 5 lessons of every module) before purchasing.
             </p>
-            <ul className="list-disc pl-5 mt-3 space-y-2">
-              <li>Your subscription is set to <strong className="text-foreground">cancel at the end of the current billing period</strong>.</li>
-              <li>You keep full access to all paid content until that period ends.</li>
-              <li>You will not be charged again after cancellation.</li>
-              <li>No further action is required — access automatically returns to the Free plan when the period ends.</li>
-            </ul>
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-foreground mb-3">4. Refunds</h2>
+            <h2 className="text-xl font-semibold text-foreground mb-3">4. Try Before You Buy</h2>
             <p>
-              Because access is granted immediately and digital learning content is consumed on demand,
-              we operate a <strong className="text-foreground">no-refund policy for partial billing periods</strong>.
-              Specifically:
+              The first 5 lessons of every module are free, so you can evaluate the content, teaching style, and
+              quizzes before making any payment. This free preview is our alternative to refunds — please make full
+              use of it before purchasing.
             </p>
-            <ul className="list-disc pl-5 mt-3 space-y-2">
-              <li>We do not provide pro-rated or partial refunds for the unused portion of a billing period.</li>
-              <li>When you cancel, you continue to have access until the end of the period you already paid for.</li>
-              <li>Subscription fees already charged for the current period are non-refundable.</li>
-            </ul>
           </section>
 
           <section>
             <h2 className="text-xl font-semibold text-foreground mb-3">5. Exceptions &amp; Disputes</h2>
             <p>
-              If you were charged in error, billed more than once for the same period, or believe there
-              has been a genuine billing mistake, please contact us within 7 days of the charge and we
-              will investigate. Approved refunds are processed back to the original payment method via
-              Razorpay and may take 5–7 business days to reflect.
+              If you were charged more than once for the same purchase, charged but never received access,
+              or believe there has been a genuine billing error, please contact us within 7 days of the
+              charge and we will investigate. Approved corrections (e.g. a duplicate charge) are refunded
+              to the original payment method via Razorpay and may take 5–7 business days to reflect.
             </p>
             <p className="mt-3">
               For any cancellation or refund dispute, email us at{" "}

@@ -33,10 +33,10 @@ export default function LessonPaywall({
         </div>
 
         <div className="relative inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-primary mb-2">
-          <Sparkles className="w-3.5 h-3.5" /> Pro lesson
+          <Sparkles className="w-3.5 h-3.5" /> Premium lesson
         </div>
         <h1 className="relative text-2xl font-bold tracking-tight mb-2">
-          This lesson is part of the Pro plan
+          Unlock this module to continue
         </h1>
 
         <p className="relative text-sm text-muted-foreground mb-1">
@@ -47,7 +47,7 @@ export default function LessonPaywall({
         </p>
 
         <div className="relative rounded-xl border border-border bg-muted/30 px-4 py-3 text-sm text-muted-foreground mb-6">
-          You&apos;re currently on the <span className="font-semibold text-foreground">Free plan</span>.
+          The first 5 lessons are free. Get <span className="font-semibold text-foreground">lifetime access</span> to this module from just <span className="font-semibold text-foreground">₹199</span>.
         </div>
 
         {/* Primary CTA */}
@@ -56,7 +56,7 @@ export default function LessonPaywall({
           className="relative w-full inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold text-white transition-transform hover:scale-[1.02]"
           style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)" }}
         >
-          Upgrade to Pro — ₹399/mo <ArrowRight className="w-4 h-4" />
+          Unlock lifetime access — from ₹199 <ArrowRight className="w-4 h-4" />
         </Link>
 
         {/* Secondary link */}
@@ -64,13 +64,13 @@ export default function LessonPaywall({
           href="/pricing"
           className="relative mt-3 inline-flex items-center justify-center gap-1 text-sm text-primary hover:gap-1.5 font-medium transition-all"
         >
-          See what&apos;s included in Pro <ArrowRight className="w-3.5 h-3.5" />
+          See all plans <ArrowRight className="w-3.5 h-3.5" />
         </Link>
 
         {/* Reassurance */}
         <div className="relative mt-6 flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
           <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-          Cancel anytime. Instant access after payment.
+          One-time payment · Lifetime access · No subscription.
         </div>
       </div>
     </div>

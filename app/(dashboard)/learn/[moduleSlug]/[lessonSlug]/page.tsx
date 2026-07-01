@@ -51,9 +51,11 @@ export default async function LessonPage({
   if (!lesson || !lesson.isPublished) notFound();
 
   // ── Content gating ──
-  // First 5 lessons of every module are free; everything else needs a paid plan.
+  // First 5 lessons of every module are free previews. Beyond that, the user must
+  // own this module (one-time lifetime purchase) or have all-access. Admins bypass.
   const isFreeLesson = lesson.order <= 5;
-  const hasAccess = isFreeLesson || isAdmin || dbUser.plan === "pro" || dbUser.plan === "business";
+  const ownsModule = dbUser.hasAllAccess || (dbUser.ownedModules ?? []).includes(mod.id);
+  const hasAccess = isFreeLesson || isAdmin || ownsModule;
 
   if (!hasAccess) {
     return (

@@ -55,7 +55,7 @@ export default function PrivacyPage() {
             <ul className="list-disc pl-5 space-y-2">
               <li>To provide and maintain your account and learning access.</li>
               <li>To issue certificates upon module completion.</li>
-              <li>To process subscription payments via Razorpay.</li>
+              <li>To process one-time payments via Razorpay.</li>
               <li>To send important account notifications (e.g., payment confirmation, certificate issued).</li>
               <li>To improve our content and platform experience.</li>
             </ul>
@@ -66,7 +66,7 @@ export default function PrivacyPage() {
             <h2 className="text-xl font-semibold text-foreground mb-3">4. Payment Processing</h2>
             <p>
               All payments are handled by <strong className="text-foreground">Razorpay</strong>, a PCI DSS-compliant payment gateway.
-              When you subscribe, your payment details go directly to Razorpay — we only receive a confirmation of the transaction.
+              When you make a purchase, your payment details go directly to Razorpay — we only receive a confirmation of the transaction.
               Razorpay's privacy policy is available at{" "}
               <a href="https://razorpay.com/privacy/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">razorpay.com/privacy</a>.
             </p>
@@ -96,7 +96,7 @@ export default function PrivacyPage() {
               <li>Access the personal data we hold about you.</li>
               <li>Request correction of inaccurate data.</li>
               <li>Request deletion of your account and data.</li>
-              <li>Cancel your subscription at any time from your account settings.</li>
+              <li>Request deletion of your account and associated data at any time.</li>
             </ul>
             <p className="mt-3">
               To exercise any of these rights, email us at{" "}

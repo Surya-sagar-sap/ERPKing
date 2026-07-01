@@ -4,66 +4,55 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 import { Sparkles } from "lucide-react";
-import PricingToggle from "@/components/PricingToggle";
-import { parseFeatures, type PlanView } from "@/lib/pricing";
+import ModulePurchase from "@/components/ModulePurchase";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Pricing — Learn ERP",
-  description: "Simple, transparent pricing for SAP learning. Free, Pro, and Business plans.",
+  description: "Simple one-time pricing. Unlock SAP modules for life — ₹199 for one, ₹299 for two, ₹599 for all.",
 };
 
 const FAQ = [
   {
-    q: "Can I switch plans later?",
-    a: "Yes — upgrade or downgrade anytime. Your progress, XP, and certificates stay with your account.",
+    q: "Is this a subscription?",
+    a: "No. Every purchase is a one-time payment that gives you lifetime access — no recurring charges, nothing to cancel.",
   },
   {
-    q: "What happens to my certificates if I cancel?",
-    a: "Certificates you've already earned are permanent and remain publicly verifiable at their credential URL.",
+    q: "What does “All Modules” include?",
+    a: "Lifetime access to every module available now, plus any new modules we add in the future — at no extra cost.",
   },
   {
-    q: "Is there a yearly discount?",
-    a: "Yes. Switch the billing toggle to yearly to see the discounted annual price for each plan.",
+    q: "Can I buy more modules later?",
+    a: "Yes. You can come back and unlock additional modules anytime, or upgrade to All Modules.",
   },
   {
-    q: "Do you offer team or enterprise pricing?",
-    a: "The Business plan covers small teams. For larger rollouts or custom learning paths, contact us for enterprise pricing.",
+    q: "Do you offer refunds?",
+    a: "Because access is granted instantly and content is digital, all purchases are final. See our Refund Policy for details.",
   },
 ];
 
 export default async function PricingPage() {
-  const dbPlans = await prisma.pricingPlan.findMany({
-    where: { isActive: true },
-    orderBy: { order: "asc" },
-  });
-
-  // Current user's plan (for "Your current plan" badge + manage link)
   const supabase = createClient();
   const { data: { user: authUser } } = await supabase.auth.getUser();
-  let currentPlan = "free";
+
+  let owned: string[] = [];
+  let hasAllAccess = false;
+  const isLoggedIn = !!authUser;
   if (authUser) {
     const dbUser = await prisma.user.findUnique({
       where: { email: authUser.email! },
-      select: { plan: true },
+      select: { ownedModules: true, hasAllAccess: true },
     });
-    currentPlan = dbUser?.plan ?? "free";
+    owned = dbUser?.ownedModules ?? [];
+    hasAllAccess = dbUser?.hasAllAccess ?? false;
   }
-  const isLoggedIn = !!authUser;
 
-  const plans: PlanView[] = dbPlans.map((p) => ({
-    id: p.id,
-    name: p.name,
-    slug: p.slug,
-    monthlyPrice: p.monthlyPrice,
-    yearlyPrice: p.yearlyPrice,
-    description: p.description,
-    features: parseFeatures(p.features),
-    highlighted: p.highlighted,
-    ctaText: p.ctaText,
-    ctaUrl: p.ctaUrl,
-    order: p.order,
-    isActive: p.isActive,
-  }));
+  const modules = await prisma.module.findMany({
+    where: { isPublished: true },
+    orderBy: { order: "asc" },
+    select: { id: true, title: true, slug: true, icon: true, color: true },
+  });
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -76,51 +65,57 @@ export default async function PricingPage() {
             <span className="font-bold text-base">Learn ERP</span>
           </Link>
           <div className="ml-auto flex items-center gap-2">
-            <Link href="/login" className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted">
-              Sign in
-            </Link>
-            <Link
-              href="/register"
-              className="text-white px-5 py-2 rounded-full text-sm font-medium transition-transform hover:scale-[1.03]"
-              style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)" }}
-            >
-              Get started free
-            </Link>
+            {isLoggedIn ? (
+              <Link href="/dashboard" className="text-white px-5 py-2 rounded-full text-sm font-medium transition-transform hover:scale-[1.03]"
+                style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)" }}>
+                Dashboard
+              </Link>
+            ) : (
+              <>
+                <Link href="/login" className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted">
+                  Sign in
+                </Link>
+                <Link href="/register" className="text-white px-5 py-2 rounded-full text-sm font-medium transition-transform hover:scale-[1.03]"
+                  style={{ background: "linear-gradient(135deg, hsl(var(--primary)), #7C3AED)" }}>
+                  Get started free
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </nav>
 
       <div className="container mx-auto max-w-5xl px-4 py-16">
-        {/* Header */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 text-primary text-sm font-medium mb-3">
             <Sparkles className="w-4 h-4" /> Pricing
           </div>
-          <h1 className="text-3xl md:text-5xl font-bold tracking-tight">
-            Learn SAP. Get certified.
-          </h1>
+          <h1 className="text-3xl md:text-5xl font-bold tracking-tight">Pay once. Learn for life.</h1>
           <p className="text-muted-foreground mt-3 text-lg">
-            Start free. Upgrade when you&apos;re ready for certificates and every module.
+            No subscriptions. Unlock the SAP modules you want — they&apos;re yours forever.
           </p>
         </div>
 
-        {plans.length > 0 ? (
-          <PricingToggle plans={plans} currentPlan={currentPlan} isLoggedIn={isLoggedIn} />
+        {modules.length > 0 ? (
+          <ModulePurchase
+            modules={modules}
+            owned={owned}
+            hasAllAccess={hasAllAccess}
+            isLoggedIn={isLoggedIn}
+          />
         ) : (
           <div className="text-center text-muted-foreground py-16">
-            Pricing is being set up. Please check back soon.
+            Modules are being set up. Please check back soon.
           </div>
         )}
 
         <p className="text-center text-xs text-muted-foreground mt-8">
-          Prices managed by admin. Contact support for enterprise pricing.
+          The first 5 lessons of every module are free to preview.
         </p>
 
         {/* FAQ */}
         <div className="mt-20 max-w-3xl mx-auto">
-          <h2 className="text-2xl font-bold tracking-tight text-center mb-8">
-            Frequently asked questions
-          </h2>
+          <h2 className="text-2xl font-bold tracking-tight text-center mb-8">Frequently asked questions</h2>
           <div className="space-y-3">
             {FAQ.map((item) => (
               <div key={item.q} className="rounded-2xl border border-border bg-card p-5">

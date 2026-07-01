@@ -9,11 +9,12 @@ export default function PaymentSuccessBanner() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    if (params.get("payment") === "success") {
+    if (params.get("payment") === "success" || params.get("purchase") === "success") {
       setShow(true);
 
       // Remove the query param from the URL without reloading.
       params.delete("payment");
+      params.delete("purchase");
       const qs = params.toString();
       const newUrl = window.location.pathname + (qs ? `?${qs}` : "");
       window.history.replaceState({}, "", newUrl);
@@ -33,10 +34,10 @@ export default function PaymentSuccessBanner() {
       </div>
       <div className="flex-1">
         <div className="font-bold text-emerald-800 dark:text-emerald-300">
-          🎉 Welcome to Pro!
+          🎉 Purchase complete!
         </div>
         <div className="text-sm text-emerald-700 dark:text-emerald-400">
-          You now have full access to all 226+ lessons.
+          Your lifetime access is unlocked. Enjoy learning!
         </div>
       </div>
       <button

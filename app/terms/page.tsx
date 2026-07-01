@@ -40,25 +40,26 @@ export default function TermsPage() {
             <h2 className="text-xl font-semibold text-foreground mb-3">2. Service Description</h2>
             <p>
               Learn ERP is an online learning platform offering pre-recorded SAP courses, quizzes,
-              certificates, and learning tools. Content is available in Free and Pro subscription tiers.
+              certificates, and learning tools. The first 5 lessons of every module are free; full
+              modules are unlocked with a one-time purchase.
             </p>
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-foreground mb-3">3. Subscriptions & Payments</h2>
+            <h2 className="text-xl font-semibold text-foreground mb-3">3. Purchases & Payments</h2>
             <ul className="list-disc pl-5 space-y-2">
-              <li>The Pro plan is billed monthly at ₹399/month or yearly at ₹2,999/year.</li>
-              <li>Payments are processed by Razorpay. By subscribing, you agree to Razorpay's terms.</li>
-              <li>Subscriptions renew automatically. You can cancel anytime from your account settings.</li>
-              <li>No refunds are issued for partially used subscription periods.</li>
+              <li>Access is sold as one-time, lifetime purchases — not subscriptions. There are no recurring charges.</li>
+              <li>Pricing: a single module ₹199, any two modules ₹299, or all modules (current and future) ₹599.</li>
+              <li>Payments are processed by Razorpay. By purchasing, you agree to Razorpay's terms.</li>
+              <li>All sales are final — purchases are non-refundable once access is granted. See our Refund Policy.</li>
             </ul>
           </section>
 
           <section>
             <h2 className="text-xl font-semibold text-foreground mb-3">4. Free Access</h2>
             <p>
-              The first 5 lessons of every module are available free of charge without a subscription.
-              All remaining lessons require an active Pro subscription.
+              The first 5 lessons of every module are available free of charge, with no purchase required.
+              The remaining lessons require a one-time purchase of that module (or all-access).
             </p>
           </section>
 

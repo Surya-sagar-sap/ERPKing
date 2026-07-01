@@ -44,11 +44,9 @@ model User {
   level          Int      @default(1)
   streak         Int      @default(0)
   lastActiveDate DateTime?
-  // Billing (Razorpay)
-  plan                   String    @default("free") // "free" | "pro" | "business"
-  razorpayCustomerId     String?
-  razorpaySubscriptionId String?
-  planExpiresAt          DateTime?
+  // Access — one-time lifetime purchases (no subscriptions)
+  ownedModules  String[]  @default([]) // Module IDs the user has unlocked for life
+  hasAllAccess  Boolean   @default(false) // ₹599 all-modules lifetime (current + future)
   // Relations
   progress       UserProgress[]
   badges         UserBadge[]

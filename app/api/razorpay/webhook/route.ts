@@ -1,12 +1,14 @@
 // ─── FILE: app/api/razorpay/webhook/route.ts ───
 /**
  * POST /api/razorpay/webhook
- * Razorpay webhook receiver — backup/source of truth for subscription state.
- * IMPORTANT: read the RAW body (request.text()) — calling request.json() first
- * changes the bytes and the HMAC signature check will fail.
+ * Backup source of truth for one-time payments. On `order.paid`, grants lifetime
+ * access from the order's server-set notes.
+ * IMPORTANT: read the RAW body (request.text()) for HMAC verification.
+ * Subscribe this endpoint to the `order.paid` event in the Razorpay dashboard.
  */
 import crypto from "crypto";
-import { prisma } from "@/lib/prisma";
+import { grantAccess } from "@/lib/entitlements";
+import { isTierKey } from "@/lib/tiers";
 
 export async function POST(request: Request) {
   const body = await request.text(); // RAW body — never request.json() or signature breaks
@@ -23,15 +25,7 @@ export async function POST(request: Request) {
 
   let event: {
     event: string;
-    payload: {
-      subscription: {
-        entity: {
-          id: string;
-          customer_id?: string;
-          notes?: Record<string, string>;
-        };
-      };
-    };
+    payload?: { order?: { entity?: { notes?: Record<string, string> } } };
   };
   try {
     event = JSON.parse(body);
@@ -39,50 +33,19 @@ export async function POST(request: Request) {
     return new Response("Bad payload", { status: 400 });
   }
 
-  const { event: eventType, payload } = event;
-
   try {
-    // First activation OR a successful (recurring) charge → ensure the user is on
-    // the right plan. Razorpay fires `subscription.activated` on the first payment
-    // and `subscription.charged` on every collection, so we treat both the same.
-    if (eventType === "subscription.activated" || eventType === "subscription.charged") {
-      const entity = payload.subscription.entity;
-      const notes = entity.notes ?? {};
+    if (event.event === "order.paid") {
+      const notes = event.payload?.order?.entity?.notes ?? {};
       const userId = notes.userId;
-      const planSlug = notes.planSlug;
-      if (userId && planSlug) {
-        await prisma.user.update({
-          where: { id: userId },
-          data: {
-            plan: planSlug,
-            razorpaySubscriptionId: entity.id,
-            // Capture the Razorpay customer id the first time we see it.
-            ...(entity.customer_id ? { razorpayCustomerId: entity.customer_id } : {}),
-            // Active subscription — no expiry. (planExpiresAt is only set on cancel,
-            // where the billing page uses it as the "access ends on" date.)
-            planExpiresAt: null,
-          },
-        });
+      const tier = notes.tier;
+      if (userId && isTierKey(tier)) {
+        const moduleIds = (notes.moduleIds ?? "").split(",").map((s) => s.trim()).filter(Boolean);
+        await grantAccess(userId, tier, moduleIds);
       }
-    }
-
-    // Subscription ended for any reason: user cancelled, plan completed its cycles,
-    // OR a renewal payment ultimately failed (`halted` after Razorpay's retries).
-    // In every case the user loses paid access.
-    if (
-      eventType === "subscription.cancelled" ||
-      eventType === "subscription.completed" ||
-      eventType === "subscription.halted"
-    ) {
-      const subscriptionId = payload.subscription.entity.id;
-      await prisma.user.updateMany({
-        where: { razorpaySubscriptionId: subscriptionId },
-        data: { plan: "free", planExpiresAt: new Date() },
-      });
     }
   } catch (err) {
     console.error("Razorpay webhook handling error:", err);
-    // Still return 200 so Razorpay doesn't hammer retries for a DB blip we logged.
+    // Return 200 anyway so Razorpay doesn't retry a logged DB blip.
   }
 
   return new Response("OK", { status: 200 });
