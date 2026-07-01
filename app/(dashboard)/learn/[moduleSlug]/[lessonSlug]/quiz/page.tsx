@@ -33,6 +33,16 @@ export default async function QuizPage({
 
   if (!lesson || !lesson.quiz) notFound();
 
+  // Shuffle each question's options so the correct answer isn't always first.
+  // Grading is by the `isCorrect` flag (not position), so this is safe. Runs
+  // server-side per request, so the order varies on each attempt.
+  for (const q of lesson.quiz.questions) {
+    for (let i = q.options.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [q.options[i], q.options[j]] = [q.options[j], q.options[i]];
+    }
+  }
+
   // Get previous score if any
   const dbUser = await prisma.user.findUnique({ where: { email: user.email! } });
   const prevProgress = dbUser
