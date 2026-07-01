@@ -1,7 +1,7 @@
 # Learn ERP — Handoff Guide
 
 An online SAP learning platform. Visual, story-driven lessons with quizzes, XP/badges,
-completion certificates, and paid subscriptions.
+completion certificates, and one-time lifetime module purchases.
 
 - **Live:** https://learnerp.app
 - **Repo:** https://github.com/Surya-sagar-sap/ERPKing
@@ -16,7 +16,7 @@ completion certificates, and paid subscriptions.
 | Styling | Tailwind CSS |
 | DB | Supabase PostgreSQL via Prisma ORM |
 | Auth | Supabase Auth (email/password) |
-| Payments | Razorpay Subscriptions (live) |
+| Payments | Razorpay Orders — one-time lifetime purchases (live) |
 | Rate limiting | Upstash Redis (optional, gated on env) |
 
 ## Environment variables
@@ -68,17 +68,25 @@ Admins get the `/admin` panel (modules, lessons, quizzes, certificates, users, p
 
 ## Payments (Razorpay)
 
-- Model: Razorpay **Plans + Subscriptions** (not one-off orders).
-- Plans/pricing seeded by `prisma/seed-razorpay-pricing.ts` (idempotent — reuses existing plan IDs).
-  Current: Free ₹0; Pro ₹399/mo, ₹2,999/yr; Business ₹1,499/mo, ₹11,999/yr.
-- Admin can change prices at `/admin/pricing` — this auto-creates a new Razorpay plan (existing
-  subscribers keep their old rate; Razorpay plans are immutable).
-- Flow: `/pricing` → create-subscription → Razorpay checkout → verify-payment (upgrades user) →
-  `/dashboard?payment=success`. Webhook is the backup source of truth.
+- Model: **one-time, lifetime** purchases via Razorpay **Orders** (no subscriptions).
+- **Pricing lives in code** — `lib/tiers.ts`. To change a price, edit that file and redeploy:
+  - Single module — ₹199
+  - Any 2 modules — ₹299
+  - All modules (current + future) — ₹599
+- **Free content:** the whole **SAP Foundation** module is free (see `FREE_MODULE_SLUGS` in `lib/tiers.ts`).
+  For every other module, the first 5 lessons are free previews.
+- **Entitlements** are on the `User` row: `ownedModules` (String[] of module IDs) and `hasAllAccess` (Boolean).
+  Grant logic is in `lib/entitlements.ts`.
+- Flow: `/pricing` (pick tier + modules) → `create-order` → Razorpay checkout → `verify-order`
+  (grants access) → `/dashboard?purchase=success`. The webhook is the backup source of truth.
 - **Webhook:** Razorpay Dashboard → Webhooks → `https://learnerp.app/api/razorpay/webhook`,
-  events: `subscription.activated`, `subscription.charged`, `subscription.cancelled`,
-  `subscription.completed`, `subscription.halted`. Copy the signing secret to `RAZORPAY_WEBHOOK_SECRET`.
-- Content gating: first 5 lessons of every module are free; the rest require Pro/Business. Admins bypass.
+  subscribe to the **`order.paid`** event. Copy the signing secret to `RAZORPAY_WEBHOOK_SECRET`.
+- Content gating (`app/(dashboard)/learn/.../page.tsx`): free module → open; else first 5 lessons free;
+  else must own the module or have all-access. Admins bypass everything.
+- `/admin/pricing` is an **info page** (prices are in code, not the DB).
+- Note: some old subscription-era files remain unused and can be deleted safely —
+  `components/PricingToggle.tsx`, `components/RazorpayButton.tsx`, `prisma/seed-razorpay-pricing.ts`,
+  and the deprecated `app/api/razorpay/{create-subscription,verify-payment,cancel-subscription}` stubs.
 
 ## Deploy
 

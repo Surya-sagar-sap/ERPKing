@@ -6,6 +6,7 @@ import {
   Sparkles, Layers, GraduationCap, PlayCircle,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
+import { prisma } from "@/lib/prisma";
 import SapArchitectureFlow from "@/components/SapArchitectureFlowClient";
 
 export default async function LandingPage() {
@@ -17,6 +18,20 @@ export default async function LandingPage() {
   const { data: { session } } = await supabase.auth.getSession();
   if (session) redirect("/dashboard");
   const isLoggedIn = false;
+
+  // Real counts so the homepage numbers are always accurate. Falls back to safe
+  // marketing defaults if the DB is briefly unavailable (keeps the page resilient).
+  let moduleCount = 14, lessonCount = 226, quizCount = 585;
+  try {
+    [moduleCount, lessonCount, quizCount] = await Promise.all([
+      prisma.module.count({ where: { isPublished: true } }),
+      prisma.lesson.count({ where: { isPublished: true } }),
+      prisma.quizQuestion.count(),
+    ]);
+  } catch {
+    // keep fallback defaults
+  }
+
   const modules = [
     { name: "SAP FICO", desc: "Finance & Controlling", color: "#2563EB", lessons: 8 },
     { name: "SAP MM", desc: "Materials Management", color: "#16A34A", lessons: 8 },
@@ -48,15 +63,15 @@ export default async function LandingPage() {
     {
       icon: <BarChart3 className="w-6 h-6" />,
       title: "Track Everything",
-      desc: "Dashboard shows exactly where you are across all 14 SAP modules.",
+      desc: `Dashboard shows exactly where you are across all ${moduleCount} SAP modules.`,
       accent: "#16A34A",
     },
   ];
 
   const stats = [
-    { value: "12", label: "SAP Modules", icon: <Layers className="w-4 h-4" /> },
-    { value: "226+", label: "Lessons", icon: <BookOpen className="w-4 h-4" /> },
-    { value: "585+", label: "Quiz Questions", icon: <GraduationCap className="w-4 h-4" /> },
+    { value: `${moduleCount}`, label: "SAP Modules", icon: <Layers className="w-4 h-4" /> },
+    { value: `${lessonCount}+`, label: "Lessons", icon: <BookOpen className="w-4 h-4" /> },
+    { value: `${quizCount}+`, label: "Quiz Questions", icon: <GraduationCap className="w-4 h-4" /> },
     { value: "XP", label: "& Badges", icon: <Trophy className="w-4 h-4" /> },
   ];
 
@@ -128,7 +143,7 @@ export default async function LandingPage() {
           {/* Left: copy */}
           <div className="text-center lg:text-left">
             <div className="inline-flex items-center gap-2 bg-primary/10 text-primary border border-primary/20 px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-              <Sparkles className="w-3.5 h-3.5" /> 14 SAP modules · 226+ interactive lessons
+              <Sparkles className="w-3.5 h-3.5" /> {moduleCount} SAP modules · {lessonCount}+ interactive lessons
             </div>
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-6 leading-[1.05]">
               Learn SAP the way it{" "}
