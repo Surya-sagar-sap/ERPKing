@@ -1,17 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 export default function ResetPasswordPage() {
   const router = useRouter();
+  const [supabase] = useState(() => createClient());
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // On load, the recovery link carries a code in the URL. The browser client
+  // exchanges it automatically; getSession() forces that to resolve so the
+  // session exists by the time the user submits the form.
+  useEffect(() => {
+    supabase.auth.getSession();
+  }, [supabase]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -28,7 +36,6 @@ export default function ResetPasswordPage() {
 
     setLoading(true);
     try {
-      const supabase = createClient();
       const { error } = await supabase.auth.updateUser({ password });
       if (error) throw error;
       setDone(true);
