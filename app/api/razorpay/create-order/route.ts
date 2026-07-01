@@ -12,7 +12,7 @@ import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { razorpay } from "@/lib/razorpay";
 import { paymentRatelimit, limitOrPass, clientIp } from "@/lib/ratelimit";
-import { TIERS, isTierKey } from "@/lib/tiers";
+import { TIERS, isTierKey, isFreeModuleSlug } from "@/lib/tiers";
 
 export async function POST(request: NextRequest) {
   const rl = await limitOrPass(paymentRatelimit, clientIp(request));
@@ -58,10 +58,14 @@ export async function POST(request: NextRequest) {
     // Ensure the modules exist and are published.
     const found = await prisma.module.findMany({
       where: { id: { in: unique }, isPublished: true },
-      select: { id: true },
+      select: { id: true, slug: true },
     });
     if (found.length !== need) {
       return NextResponse.json({ error: "One or more selected modules are unavailable." }, { status: 400 });
+    }
+    // Free modules can't be purchased.
+    if (found.some((m) => isFreeModuleSlug(m.slug))) {
+      return NextResponse.json({ error: "That module is already free — no purchase needed." }, { status: 400 });
     }
     // Drop any the user already owns.
     const alreadyOwned = new Set(dbUser.ownedModules ?? []);

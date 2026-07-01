@@ -9,6 +9,7 @@ import CompleteButton from "@/components/lesson/CompleteButton";
 import FlowchartViewer from "@/components/flowchart/FlowchartViewer";
 import AppNav from "@/components/AppNav";
 import LessonPaywall from "@/components/LessonPaywall";
+import { isFreeModuleSlug } from "@/lib/tiers";
 import type { Node, Edge } from "reactflow";
 
 export default async function LessonPage({
@@ -51,11 +52,13 @@ export default async function LessonPage({
   if (!lesson || !lesson.isPublished) notFound();
 
   // ── Content gating ──
-  // First 5 lessons of every module are free previews. Beyond that, the user must
-  // own this module (one-time lifetime purchase) or have all-access. Admins bypass.
+  // Fully-free modules (e.g. Foundation) are always open. Otherwise the first 5
+  // lessons are free previews; beyond that the user must own this module
+  // (one-time lifetime purchase) or have all-access. Admins bypass everything.
+  const isFreeModule = isFreeModuleSlug(mod.slug);
   const isFreeLesson = lesson.order <= 5;
   const ownsModule = dbUser.hasAllAccess || (dbUser.ownedModules ?? []).includes(mod.id);
-  const hasAccess = isFreeLesson || isAdmin || ownsModule;
+  const hasAccess = isFreeModule || isFreeLesson || isAdmin || ownsModule;
 
   if (!hasAccess) {
     return (

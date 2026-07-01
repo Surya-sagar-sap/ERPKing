@@ -4,6 +4,15 @@
 
 export type TierKey = "single" | "duo" | "all";
 
+/**
+ * Modules that are 100% free (the whole module, not just the first 5 lessons).
+ * These are excluded from paid checkout and never show a paywall.
+ */
+export const FREE_MODULE_SLUGS = ["foundation"];
+export function isFreeModuleSlug(slug: string): boolean {
+  return FREE_MODULE_SLUGS.includes(slug);
+}
+
 export interface Tier {
   key: TierKey;
   name: string;

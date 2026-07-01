@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 import { Sparkles } from "lucide-react";
 import ModulePurchase from "@/components/ModulePurchase";
+import { isFreeModuleSlug } from "@/lib/tiers";
 
 export const dynamic = "force-dynamic";
 
@@ -48,11 +49,13 @@ export default async function PricingPage() {
     hasAllAccess = dbUser?.hasAllAccess ?? false;
   }
 
-  const modules = await prisma.module.findMany({
+  const allModules = await prisma.module.findMany({
     where: { isPublished: true },
     orderBy: { order: "asc" },
     select: { id: true, title: true, slug: true, icon: true, color: true },
   });
+  // Free modules (e.g. Foundation) aren't purchasable — exclude from the picker.
+  const modules = allModules.filter((m) => !isFreeModuleSlug(m.slug));
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -110,7 +113,7 @@ export default async function PricingPage() {
         )}
 
         <p className="text-center text-xs text-muted-foreground mt-8">
-          The first 5 lessons of every module are free to preview.
+          The entire <span className="font-medium text-foreground">SAP Foundation</span> module is free — plus the first 5 lessons of every other module.
         </p>
 
         {/* FAQ */}
